@@ -1,0 +1,23 @@
+{
+  "name": "blog-admin",
+  "version": "1.0.0",
+  "description": "博客管理系统",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LitileXueZha/blog-admin.git"
+  },
+  "keywords": [
+    "blog",
+    "admin"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LitileXueZha/blog-admin/issues"
+  },
+  "homepage": "https://github.com/LitileXueZha/blog-admin#readme"
+}
