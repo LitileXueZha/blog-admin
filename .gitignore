@@ -1,0 +1,6 @@
+.scannerwork/
+node_modules/
+dist/
+
+# webpack-bundle-analyzer
+zzz-analyzer.html
