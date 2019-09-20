@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
+import './index.less';
+import store from './store';
+import Routes from './Routes';
 
 ReactDOM.render(
-    <React.Fragment>
-        test
-    </React.Fragment>,
+    <Provider store={store}>
+        <Routes />
+    </Provider>,
     document.getElementById('app'),
 );
