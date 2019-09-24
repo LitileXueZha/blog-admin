@@ -31,7 +31,7 @@ function Nav(props) {
             <ButtonBase className={getActiveName('/msg')} component="div">
                 <Link to="/msg">
                     <ion-icon name="ios-easel" />
-                    留言管理
+                    留言板
                 </Link>
             </ButtonBase>
             <ButtonBase className={getActiveName('/comment')} component="div">

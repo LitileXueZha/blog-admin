@@ -6,10 +6,11 @@ import './index.less';
 import Nav from './Nav';
 
 const BREADCRUMB = {
-    article: '文章',
-    tag: '标签',
-    msg: '留言',
-    comment: '评论',
+    '/article': '文章',
+    '/article/edit': <><ion-icon name="ios-brush" /> 写文章</>,
+    '/tag': '标签',
+    '/msg': '留言',
+    '/comment': '评论',
 };
 
 function Layout(props) {
@@ -21,10 +22,10 @@ function Layout(props) {
             to += `/${path}`;
 
             if (index === paths.length - 1) {
-                return <span className="breadcrumb-item active">{BREADCRUMB[path]}</span>;
+                return <span className="breadcrumb-item active">{BREADCRUMB[to]}</span>;
             }
 
-            return <Link to={to} className="breadcrumb-item">{BREADCRUMB[path]}</Link>;
+            return <Link to={to} className="breadcrumb-item">{BREADCRUMB[to]}</Link>;
         });
     };
 
