@@ -10,7 +10,7 @@ module.exports = {
     stats: 'minimal',
     port: 8002,
     contentBase: path.join(__dirname, 'dist'),
-    disableHostCheck: true,
+    historyApiFallback: true,
     hot: true,
     compress: true,
   },

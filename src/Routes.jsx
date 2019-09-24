@@ -1,18 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Button, Dialog, AppBar, Toolbar, MenuList, MenuItem } from '@material-ui/core';
 
 import Layout from './components/Layout/index';
+import Index from './pages/index';
 
 export default function Routes() {
     return (
         <BrowserRouter>
             <Layout>
-                <Button>
-                    <i className="ion ion-ios-heart"></i>
-                    <ion-icon name="ios-heart"></ion-icon>
-                    heelo
-                </Button>
+                <Route path="/index" component={Index} />
+                <Route path="/tag" component={Index} />
             </Layout>
         </BrowserRouter>
     );

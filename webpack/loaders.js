@@ -11,15 +11,19 @@ module.exports = [
       loader: 'babel-loader',
       options: {
         presets: ['@babel/preset-env', '@babel/preset-react'],
-        plugins: [[
-          'babel-plugin-import',
-          {
-            libraryName: '@material/core',
-            libraryDirectory: 'esm',
-            camel2DashComponentName: false,
-          },
-          'core',
-        ]],
+        plugins: [
+          [
+            'babel-plugin-import',
+            {
+              libraryName: '@material/core',
+              libraryDirectory: 'esm',
+              camel2DashComponentName: false,
+            },
+            'core',
+          ],
+          '@babel/plugin-proposal-class-properties',
+          '@babel/plugin-syntax-dynamic-import',
+        ],
       },
     },
   }, {

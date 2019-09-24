@@ -1,9 +1,14 @@
+@import '../../assets/styles/variables.less';
+
 @height: 64px;
 
 .header {
     height: @height;
-    color: #fff;
-    background: #009688;
+    background: @mainColor;
+
+    .logo {
+        border-radius: 2px;
+    }
 
     .header-content {
         display: flex;
@@ -11,4 +16,55 @@
         height: @height;
     }
 
+    .header-nav {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        margin-left: @mainSpace * 2;
+
+        .header-nav-item {
+            height: 100%;
+            transition: .3s;
+        }
+        .header-nav-item.active {
+            background: rgba(#000, 15%);
+
+            a {
+                color: #fff;
+            }
+        }
+    
+        a {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 @mainSpace * 2;
+            color: @secondColor;
+            transition: .3s;
+        }
+        a ion-icon {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+    }
+}
+
+.breadcrumb {
+    margin: @mainSpace 0 !important;
+    font-size: 14px !important;
+    
+    .breadcrumb-item {
+        color: @textColorDesc;
+
+        &.active {
+            color: @textColorTitle;
+        }
+    }
+}
+
+.footer {
+    padding: 10px;
+    color: @textColorDesc;
+    font-size: 12px;
+    text-align: center;
 }
