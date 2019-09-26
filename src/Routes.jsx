@@ -10,7 +10,7 @@ export default function Routes() {
         <BrowserRouter>
             <Layout>
                 <Route path="/index" component={Index} />
-                <Route path="/article" component={Article} />
+                <Route exact path="/article" component={Article} />
                 <Route path="/article/edit" component={Article} />
                 <Route path="/tag" component={Index} />
             </Layout>
