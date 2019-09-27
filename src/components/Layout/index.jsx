@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, ButtonBase, Breadcrumbs } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Container, Menu, MenuItem, ButtonBase } from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom';
 
 import './index.less';
@@ -7,13 +7,28 @@ import Nav from './Nav';
 import BreadCrumb from './BreadCrumb';
 
 function Layout(props) {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClose = () => setAnchorEl(null);
+
     return (
         <>
             <header className="header">
                 <Container className="header-content">
-                    <img src={require('@assets/images/logo.jpg')} className="logo" alt="logo" width="50" height="50" />
+                    <Link to="/">
+                        <img src={require('@assets/images/logo.jpg')} className="logo" alt="logo" width="50" height="50" />
+                    </Link>
+                    {/* <Link to="/" className="logo">博客管理系统</Link> */}
 
                     <Nav />
+
+                    <ion-icon name="ios-person" class="menu" onClick={(e) => setAnchorEl(e.target)} />
+                    <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                        <MenuItem>Admin</MenuItem>
+                        <MenuItem>
+                            <Link to="/login">登出</Link>
+                        </MenuItem>
+                    </Menu>
                 </Container>
             </header>
 

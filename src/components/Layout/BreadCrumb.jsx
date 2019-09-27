@@ -8,6 +8,7 @@ import { withRouter, Link } from 'react-router-dom';
  * @var {Object}
  */
 const BREADCRUMB = {
+    '/': '首页',
     '/article': '文章',
     '/article/edit': {
         title: '写文章',

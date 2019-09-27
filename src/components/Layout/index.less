@@ -7,7 +7,14 @@
     background: @mainColor;
 
     .logo {
+        // display: block;
+        // padding: 0 @mainSpace * 2;
+        // height: 40px;
         border-radius: 2px;
+        // color: @textColorTitle;
+        // font-size: 20px;
+        // line-height: 40px;
+        // background: #B2DFDB;
     }
 
     .header-content {
@@ -27,7 +34,7 @@
             transition: .3s;
         }
         .header-nav-item.active {
-            background: rgba(#000, 15%);
+            background: #00796B;
 
             a {
                 color: #fff;
@@ -39,13 +46,23 @@
             align-items: center;
             height: 100%;
             padding: 0 @mainSpace * 2;
-            color: @secondColor;
+            color: #B2DFDB;
             transition: .3s;
+        }
+        a:hover {
+            color: #fff;
         }
         a ion-icon {
             margin-right: 5px;
             font-size: 16px;
         }
+    }
+
+    .menu {
+        margin-left: auto;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
     }
 }
 
@@ -63,7 +80,7 @@
 }
 
 .footer {
-    padding: 10px;
+    padding: @mainSpace * 2 0 @mainSpace 0;
     color: @textColorDesc;
     font-size: 12px;
     text-align: center;

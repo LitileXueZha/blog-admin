@@ -4,7 +4,7 @@ export default class Index extends React.Component {
     state = {};
 
     render() {
-        return <div>test</div>;
+        return <div className="container">欢迎！</div>;
     }
 }
 
