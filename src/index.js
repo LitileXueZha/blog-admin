@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import moment from 'moment';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { teal } from '@material-ui/core/colors';
 import { ThemeProvider } from '@material-ui/styles';
@@ -30,11 +31,13 @@ const theme = createMuiTheme({
             head: {
                 color: '#333',
                 fontSize: '0.875rem',
-                fontWeight: 500,
+                fontWeight: 600,
             },
         },
     },
 });
+
+moment.locale('zh-cn');
 
 ReactDOM.render(
     <Provider store={store}>

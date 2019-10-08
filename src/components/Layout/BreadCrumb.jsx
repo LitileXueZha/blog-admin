@@ -35,7 +35,7 @@ function BreadCrumb(props) {
 
         if (typeof bread === 'object') {
             title = bread.title;
-            icon = <ion-icon name={bread.icon} />;
+            icon = <ion-icon name={`ios-${bread.icon}`} />;
         }
 
         // NOTE: 设置浏览器标题
@@ -51,7 +51,7 @@ function BreadCrumb(props) {
             );
         } else {
             crumb = (
-                <Link to={to} className="breadcrumb-item">
+                <Link to={to} className="breadcrumb-item" key={to}>
                     {icon}
                     {title}
                 </Link>

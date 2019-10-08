@@ -13,6 +13,7 @@ export function getArticleList(params) {
         headers: {
             Authorization: 'Bearer tao',
         },
+        params,
     }).then((res) => dispatch({
         type: GET_ARTICLE_LIST,
         payload: res,
