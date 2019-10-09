@@ -8,47 +8,28 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    TableFooter,
-    TablePagination,
     Button,
 } from '@material-ui/core';
 
 import './index.less';
 import { getArticleList } from '../../store/article';
 import { ARTICLE_TYPE, ARTICLE_STATUS } from '../../utils/constants';
+import Pagination from '../../components/Pagination';
 
 class Article extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            page: 0,
-            rowsPerPage: 10,
         };
     }
 
-    componentDidMount() {
-        this.getArticleList();
-    }
-
-    getArticleList() {
-        const { page, rowsPerPage } = this.state;
-
+    getArticleList = ({ page, size }) => {
         this.props.getArticleList({
             page: page + 1,
-            size: rowsPerPage,
+            size,
         });
     }
-
-    handlePageChange = (e, page) => {
-        this.setState({ page }, () => this.getArticleList());
-    };
-
-    handlePerChange = (e) => {
-        const rowsPerPage = e.target.value;
-
-        this.setState({ rowsPerPage }, () => this.getArticleList());
-    };
 
     renderRows() {
         const { items } = this.props.article;
@@ -67,7 +48,6 @@ class Article extends React.Component {
 
     render() {
         const { article } = this.props;
-        const { rowsPerPage, page } = this.state;
 
         return (
             <div className="container">
@@ -90,19 +70,8 @@ class Article extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>{this.renderRows()}</TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                                style={{ border: 'none' }}
-                                rowsPerPageOptions={[5, 10, 25]}
-                                rowsPerPage={rowsPerPage}
-                                count={article.total}
-                                page={page}
-                                onChangePage={this.handlePageChange}
-                                onChangeRowsPerPage={this.handlePerChange}
-                            />
-                        </TableRow>
-                    </TableFooter>
+
+                    <Pagination count={article.total} onChange={this.getArticleList} />
                 </Table>
             </div>
         );
