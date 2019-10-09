@@ -30,5 +30,15 @@ export default createMuiTheme({
                 fontWeight: 600,
             },
         },
+        MuiDialogTitle: {
+            root: {
+                color: '#333',
+            },
+        },
+        MuiInputBase: {
+            input: {
+                fontSize: '14px',
+            },
+        },
     },
 });
