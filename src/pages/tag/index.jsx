@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 
 import './index.less';
-import { getTagList } from '../../store/tag';
+import { getTagList, addTag } from '../../store/tag';
 import FormTag from './FormTag';
 
 class Tag extends React.Component {
@@ -22,8 +22,9 @@ class Tag extends React.Component {
         super(props);
 
         this.state = {
-            showModal: true,
+            showModal: false,
         };
+        this.submitBtn = React.createRef();
     }
 
     componentDidMount() {
@@ -34,6 +35,14 @@ class Tag extends React.Component {
         this.setState({ showModal: true });
     };
 
+    hideModal = () => {
+        this.setState({ showModal: false });
+    };
+
+    handleSubmit = (values) => {
+        this.props.addTag(values).then(this.hideModal);
+    };
+
     render() {
         const { tag } = this.props;
         const { showModal } = this.state;
@@ -41,35 +50,36 @@ class Tag extends React.Component {
         return (
             <div className="container">
                 <Chip
-                    style={{ marginRight: 20 }}
+                    style={{ marginRight: 20, float: 'left' }}
                     color="primary"
                     label={<><ion-icon style={{ fontSize: '17px' }} name="ios-add" /> 新建</>}
                     onClick={this.showCreateModal}
-                    clickable
                 />
-                {tag.items.map((val) => (
-                    <Chip
-                        className="tag"
-                        key={val.id}
-                        variant="outlined"
-                        label={val.name}
-                        avatar={<Avatar>{val.name[0]}</Avatar>}
-                        onClick={() => console.log(val.name)}
-                        title="点击编辑"
-                    />
-                ))}
+                <div style={{ overflow: 'auto' }}>
+                    {tag.items.map((val) => (
+                        <Chip
+                            className="tag"
+                            key={val.id}
+                            variant="outlined"
+                            label={val.name}
+                            avatar={<Avatar style={{ textTransform: 'uppercase' }}>{val.name[0]}</Avatar>}
+                            onClick={() => console.log(val.name)}
+                            title="点击编辑"
+                        />
+                    ))}
+                </div>
 
                 <Dialog
                     open={showModal}
-                    onClose={() => this.setState({ showModal: false })}
+                    onClose={this.hideModal}
                 >
                     <DialogTitle>创建标签</DialogTitle>
                     <DialogContent>
-                        <FormTag onSubmit={console.log} />
+                        <FormTag ref={this.submitBtn} onSubmit={this.handleSubmit} />
                     </DialogContent>
                     <DialogActions>
-                        <Button>取消</Button>
-                        <Button color="primary">保存</Button>
+                        <Button onClick={this.hideModal}>取消</Button>
+                        <Button color="primary" onClick={() => this.submitBtn.current.click()}>保存</Button>
                     </DialogActions>
                 </Dialog>
             </div>
@@ -85,6 +95,7 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
     return {
         getTagList: (params) => dispatch(getTagList(params)),
+        addTag: (params) => dispatch(addTag(params)),
     };
 }
 

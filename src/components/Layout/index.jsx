@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { Container, Menu, MenuItem, ButtonBase } from '@material-ui/core';
+import {
+    Container,
+    Menu,
+    MenuItem,
+    IconButton,
+} from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom';
 
 import './index.less';
@@ -22,7 +27,9 @@ function Layout(props) {
 
                     <Nav />
 
-                    <ion-icon name="ios-person" class="menu" onClick={(e) => setAnchorEl(e.target)} />
+                    <IconButton className="menu" onClick={(e) => setAnchorEl(e.target)}>
+                        <ion-icon name="ios-person" />
+                    </IconButton>
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                         <MenuItem>Admin</MenuItem>
                         <MenuItem>
