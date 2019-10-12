@@ -1,6 +1,7 @@
 import QueryString from 'query-string';
 
 import { API } from './constants';
+import Msg from '../components/message';
 
 /**
  * 请求默认值
@@ -11,6 +12,7 @@ const defaultOpts = {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer tao',
     },
     // credentials: 'include',
 };
@@ -47,7 +49,11 @@ export default function fetch(url, opts = {}) {
                     resolve(data);
                 } else {
                     reject(res);
+                    Msg.error(res.error);
                 }
+            })
+            .catch(() => {
+                Msg.info('网络开小差了~');
             });
     });
 }

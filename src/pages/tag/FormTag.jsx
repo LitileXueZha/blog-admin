@@ -9,7 +9,8 @@ import {
 } from '@material-ui/core';
 
 function FormTag(props, ref) {
-    const [status, setStatus] = useState(1);
+    const { defaultValue } = props;
+    const [status, setStatus] = useState(defaultValue.status || 1);
     const [error, setError] = useState(false);
 
     const submit = (e) => {
@@ -37,6 +38,7 @@ function FormTag(props, ref) {
                 name="id"
                 label="标签id"
                 placeholder="仅英文数字组合"
+                defaultValue={defaultValue.id}
                 InputLabelProps={{
                     shrink: true,
                 }}
@@ -51,6 +53,7 @@ function FormTag(props, ref) {
                 style={{ marginBottom: 20 }}
                 label="展示名称"
                 placeholder="中英文、表情都可"
+                defaultValue={defaultValue.name}
                 InputLabelProps={{
                     shrink: true,
                 }}

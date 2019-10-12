@@ -36,7 +36,7 @@ function Nav(props) {
             </ButtonBase>
             <ButtonBase className={getActiveName('/comment')} component="div">
                 <Link to="/comment">
-                    <ion-icon name="ios-chatboxes" />
+                    <ion-icon name="ios-text" />
                     评论管理
                 </Link>
             </ButtonBase>

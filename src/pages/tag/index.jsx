@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
     Chip,
     Avatar,
@@ -14,7 +15,7 @@ import {
 } from '@material-ui/core';
 
 import './index.less';
-import { getTagList, addTag } from '../../store/tag';
+import { getTagList, addTag, updateTag } from '../../store/tag';
 import FormTag from './FormTag';
 
 class Tag extends React.Component {
@@ -22,6 +23,7 @@ class Tag extends React.Component {
         super(props);
 
         this.state = {
+            currTag: {},
             showModal: false,
         };
         this.submitBtn = React.createRef();
@@ -31,21 +33,34 @@ class Tag extends React.Component {
         this.props.getTagList();
     }
 
-    showCreateModal = () => {
-        this.setState({ showModal: true });
+    showCreateModal = (tag = {}) => {
+        this.setState({
+            showModal: true,
+            currTag: tag,
+        });
     };
 
     hideModal = () => {
         this.setState({ showModal: false });
     };
 
-    handleSubmit = (values) => {
-        this.props.addTag(values).then(this.hideModal);
+    handleSubmit = async (values) => {
+        const { id } = this.state.currTag;
+
+        if (id) {
+            // 更新数据
+            await this.props.updateTag(id, values);
+        } else {
+            // 添加
+            await this.props.addTag(values);
+        }
+
+        this.hideModal();
     };
 
     render() {
         const { tag } = this.props;
-        const { showModal } = this.state;
+        const { showModal, currTag } = this.state;
 
         return (
             <div className="container">
@@ -63,7 +78,8 @@ class Tag extends React.Component {
                             variant="outlined"
                             label={val.name}
                             avatar={<Avatar style={{ textTransform: 'uppercase' }}>{val.name[0]}</Avatar>}
-                            onClick={() => console.log(val.name)}
+                            onClick={() => this.showCreateModal(val)}
+                            disabled={val.status === 2}
                             title="点击编辑"
                         />
                     ))}
@@ -75,7 +91,7 @@ class Tag extends React.Component {
                 >
                     <DialogTitle>创建标签</DialogTitle>
                     <DialogContent>
-                        <FormTag ref={this.submitBtn} onSubmit={this.handleSubmit} />
+                        <FormTag ref={this.submitBtn} defaultValue={currTag} onSubmit={this.handleSubmit} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.hideModal}>取消</Button>
@@ -93,10 +109,11 @@ function mapStateToProps(store) {
     };
 }
 function mapDispatchToProps(dispatch) {
-    return {
-        getTagList: (params) => dispatch(getTagList(params)),
-        addTag: (params) => dispatch(addTag(params)),
-    };
+    return bindActionCreators({
+        getTagList,
+        addTag,
+        updateTag,
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tag);
