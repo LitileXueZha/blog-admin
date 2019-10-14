@@ -71,10 +71,16 @@
     font-size: 14px !important;
     
     .breadcrumb-item {
+        display: flex;
+        align-items: center;
         color: @textColorDesc;
 
         &.active {
             color: @textColorTitle;
+        }
+
+        ion-icon {
+            margin-right: 2px;
         }
     }
 }
