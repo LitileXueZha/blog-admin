@@ -16,25 +16,25 @@ function Nav(props) {
 
     return (
         <nav className="header-nav">
-            <ButtonBase className={getActiveName('/article')} component="div">
+            <ButtonBase className={getActiveName('/article')} component="div" focusRipple>
                 <Link to="/article">
                     <ion-icon name="ios-book" />
                     文章
                 </Link>
             </ButtonBase>
-            <ButtonBase className={getActiveName('/tag')} component="div">
+            <ButtonBase className={getActiveName('/tag')} component="div" focusRipple>
                 <Link to="/tag">
                     <ion-icon name="ios-pricetags" />
                     标签云
                 </Link>
             </ButtonBase>
-            <ButtonBase className={getActiveName('/msg')} component="div">
+            <ButtonBase className={getActiveName('/msg')} component="div" focusRipple>
                 <Link to="/msg">
                     <ion-icon name="ios-easel" />
                     留言板
                 </Link>
             </ButtonBase>
-            <ButtonBase className={getActiveName('/comment')} component="div">
+            <ButtonBase className={getActiveName('/comment')} component="div" focusRipple>
                 <Link to="/comment">
                     <ion-icon name="ios-text" />
                     评论管理

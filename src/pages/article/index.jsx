@@ -51,7 +51,7 @@ class Article extends React.Component {
 
         return (
             <div className="container">
-                <Link to="/article/edit">
+                <Link to="/article/new">
                     <Button color="primary" variant="contained">
                         <ion-icon name="ios-brush" style={{ marginRight: 10 }} />
                         写文章

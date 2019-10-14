@@ -6,6 +6,8 @@ import Index from './pages/index';
 import Article from './pages/article';
 import Login from './pages/login';
 import Tag from './pages/tag';
+import NotFound from './pages/NotFound';
+import ArticleCreate from './pages/article/New';
 
 export default function Routes() {
     return (
@@ -16,9 +18,10 @@ export default function Routes() {
                     <Layout>
                         <Switch>
                             <Route path="/" component={Index} exact />
-                            <Route path="/article" component={Article} />
-                            <Route path="/article/edit" component={Article} />
+                            <Route path="/article" component={Article} exact />
+                            <Route path="/article/new" component={ArticleCreate} exact />
                             <Route path="/tag" component={Tag} />
+                            <Route component={NotFound} />
                         </Switch>
                     </Layout>
                 </Route>

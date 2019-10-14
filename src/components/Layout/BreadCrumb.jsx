@@ -10,13 +10,14 @@ import { withRouter, Link } from 'react-router-dom';
 const BREADCRUMB = {
     '/': '首页',
     '/article': '文章',
-    '/article/edit': {
+    '/article/new': {
         title: '写文章',
         icon: 'brush',
     },
     '/tag': '标签',
     '/msg': '留言',
     '/comment': '评论',
+    404: '页面不见了',
 };
 
 
@@ -28,7 +29,7 @@ function BreadCrumb(props) {
     for (let i = 1; i < paths.length; i ++) {
         to += `/${paths[i]}`;
 
-        const bread = BREADCRUMB[to];
+        const bread = BREADCRUMB[to] || BREADCRUMB[404];
         let title = bread;
         let icon;
         let crumb = '';
