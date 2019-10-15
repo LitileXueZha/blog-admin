@@ -22,10 +22,11 @@ class ArticleCreate extends React.Component {
             preview: 'input&view',
             fullscreen: false,
         };
+        this.markdownRef = React.createRef();
     }
 
     componentDidMount() {
-        this.ace = ace.init('ace-editor');
+        this.ace = ace.init('ace-editor', this.markdownRef.current);
     }
 
     handleBarChange = (act) => {
@@ -53,7 +54,7 @@ class ArticleCreate extends React.Component {
                 <StatusBar onChange={this.handleBarChange} fullscreen={fullscreen} />
 
                 <div id="ace-editor" className="article-textarea" />
-                <div className="article-preview markdowned" title="预览"> </div>
+                <div className="article-preview markdowned" ref={this.markdownRef} title="预览"> </div>
             </div>
         );
     }

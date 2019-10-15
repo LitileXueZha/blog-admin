@@ -30,6 +30,13 @@ export default function StatusBar(props) {
 
     return (
         <div className="actions">
+            <img
+                src={require('@assets/images/ace.png')}
+                className="editor-logo"
+                alt="ace"
+                title="powered by ace-editor"
+                height="24"
+            />
             <Button onClick={() => setOpen(true)} ref={previewRef}>
                 <ion-icon style={{ marginRight: 5 }} name="ios-apps" />
                 {PREVIEW_OPT[status]}

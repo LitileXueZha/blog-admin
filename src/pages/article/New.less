@@ -6,6 +6,20 @@
     display: flex;
     flex-wrap: wrap;
 
+    &.fullscreen {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow-y: scroll;
+
+        .article-textarea,
+        .article-preview {
+            min-height: 100%;
+        }
+    }
+
     &.input,
     &.input\&view {
         & .article-textarea {
@@ -17,6 +31,10 @@
         & .article-preview {
             display: block;
         }
+    }
+
+    &.input\&view .article-preview {
+        border-left: 1px solid @borderColor;
     }
 
     .actions {
@@ -31,14 +49,122 @@
         flex: 1;
         min-height: 300px;
         padding: @mainSpace;
-        border-left: 1px solid @borderColor;
         background: #fff;
         display: none;
     }
 
     .article-textarea {
-        // margin-right: @mainSpace;
         border-color: @borderColor;
         font-size: 14px;
+    }
+
+    .editor-logo {
+        margin-right: @mainSpace;
+        vertical-align: middle;
+    }
+}
+
+.markdowned {
+    overflow: hidden;
+      
+    h1, h2, h3, h4, h5, h6 {
+      margin: 32px 0;
+      font-weight: 500;
+      color: #000;
+    }
+    h1 {
+      font-size: 30px;
+      line-height: 30px;
+    }
+    h2 {
+      font-size: 24px;
+      line-height: 24px;
+    }
+    h3 {
+      font-size: 20px;
+    }
+    h4 {
+      font-size: 16px;
+    }
+    h5 {
+      font-size: 14px;
+    }
+    h6 {
+      font-size: 12px;
+    }
+    ol, ul {
+      padding-left: 1.5em;
+      list-style: circle;
+    }
+    ol { list-style: decimal }
+    ol ol { list-style: lower-roman }
+    ul + ul, ul + ol, ol + ol, ol + ul {
+      margin-top: 16px;
+    }
+  
+    p, pre, img, table {
+      margin: 16px 0;
+    }
+  
+    code {
+      padding: 0 4px;
+    }
+    pre > code {
+      padding: 16px;
+      border-radius: 3px;
+    }
+  
+    em {
+      font-style: italic;
+    }
+    b, strong {
+      font-weight: bold;
+    }
+  
+    blockquote {
+      padding: 0 1em;
+      color: #6a737d;
+      border-left: 0.25em solid #dfe2e5;
+    }
+  
+    sub {
+      vertical-align: sub;
+      font-size: smaller;
+    }
+    sup {
+      vertical-align: super;
+      font-size: smaller;
+    }
+    small {
+      font-size: smaller;
+    }
+  
+    img {
+      max-width: 100%;
+      vertical-align: middle;
+    }
+    td > img {
+      margin: 0;
+    }
+  
+    table th {
+      color: #000;
+      font-weight: 600;
+    }
+    table th, table td {
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+      // text-align: left;
+      vertical-align: middle;
+    }
+    table tr:nth-child(2n) {
+      background-color: #f6f8fa;
+    }
+    table span {
+      width: auto;
+    }
+    
+    .mermaid {
+      text-align: center;
     }
 }
