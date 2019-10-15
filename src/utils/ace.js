@@ -16,6 +16,7 @@ ace.init = (selector) => {
         maxLines: 1000,
         printMarginColumn: 120,
         wrap: true,
+        foldStyle: 'markbegin',
     });
 
 

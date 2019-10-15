@@ -4,6 +4,27 @@
 
 .container-article-new {
     display: flex;
+    flex-wrap: wrap;
+
+    &.input,
+    &.input\&view {
+        & .article-textarea {
+            display: block;
+        }
+    }
+    &.view,
+    &.input\&view {
+        & .article-preview {
+            display: block;
+        }
+    }
+
+    .actions {
+        width: 100%;
+        padding: @mainSpace;
+        border-bottom: 4px solid #e0e0e0;
+        background: #fff;
+    }
 
     .article-textarea,
     .article-preview {
@@ -12,6 +33,7 @@
         padding: @mainSpace;
         border-left: 1px solid @borderColor;
         background: #fff;
+        display: none;
     }
 
     .article-textarea {

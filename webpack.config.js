@@ -1,6 +1,7 @@
+/* eslint-disable indent */
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin');
-const { HashedModuleIdsPlugin } = require('webpack');
+const { HashedModuleIdsPlugin, IgnorePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const config = require('./webpack');
@@ -16,6 +17,13 @@ config.plugins.push(new BundleAnalyzerPlugin({
   openAnalyzer: false,
   logLevel: 'error',
 }));
+
+// moment.js 打包优化
+// 文档：https://momentjs.com/docs/#/use-it/webpack/
+config.plugins.push(new IgnorePlugin(/^\.\/locale$/, /moment$/));
+
+// 生成 .gz 文件。另一种由 google 开发的 br 算法也开始流行，不过需要安装 nginx 模块
+// 文档：https://webpack.js.org/plugins/compression-webpack-plugin/
 
 module.exports = {
   ...config,

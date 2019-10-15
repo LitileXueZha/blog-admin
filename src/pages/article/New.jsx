@@ -1,30 +1,59 @@
 import React from 'react';
-import { TextareaAutosize, Tooltip } from '@material-ui/core';
+import {
+    FormControlLabel,
+    Switch,
+    Button,
+    Select,
+    MenuItem,
+    Dialog,
+    DialogContent,
+    Menu,
+} from '@material-ui/core';
 import ace from '../../utils/ace';
 
 import './New.less';
+import StatusBar from './StatusBar';
 
 class ArticleCreate extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            preview: 'input&view',
+            fullscreen: false,
+        };
     }
 
     componentDidMount() {
-        ace.init('ace-editor');
+        this.ace = ace.init('ace-editor');
     }
 
-    render() {
-        return (
-            <div className="container-article-new">
-                <Tooltip title="powerd by ace-editor">
-                    <div id="ace-editor" className="article-textarea" />
-                </Tooltip>
+    handleBarChange = (act) => {
+        const { fullscreen } = this.state;
 
-                <Tooltip title="预览">
-                    <div className="article-preview markdowned"> </div>
-                </Tooltip>
+        switch (act.event) {
+            case 'preview':
+                this.setState({ preview: act.status }, () => this.ace.resize());
+                break;
+            case 'input':
+                this.setState({ fullscreen: !fullscreen }, () => this.ace.resize());
+                break;
+            case 'look':
+                break;
+            default:
+                break;
+        }
+    };
+
+    render() {
+        const { preview, fullscreen } = this.state;
+
+        return (
+            <div className={`container-article-new ${preview} ${fullscreen && 'fullscreen'}`}>
+                <StatusBar onChange={this.handleBarChange} fullscreen={fullscreen} />
+
+                <div id="ace-editor" className="article-textarea" />
+                <div className="article-preview markdowned" title="预览"> </div>
             </div>
         );
     }
