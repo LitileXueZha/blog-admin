@@ -35,6 +35,7 @@ hljs.registerLanguage('php', php);
 hljs.registerLanguage('sql', sql);
 
 let mermaid;
+let mermaidChanged = false;
 let MathJax;
 const renderer = new marked.Renderer();
 
@@ -46,10 +47,9 @@ renderer.code = (code, lang) => {
             import(/* webpackChunkName: "mermaid" */ 'mermaid').then((res) => {
                 mermaid = res.default;
                 mermaid.init();
-            });
+            }).catch(() => {});
             return `<div class="mermaid">${code}</div>`;
         }
-        console.log(mermaid.render('hello', code))
         return `<div class="mermaid">${code}</div>`;
     }
 
@@ -60,12 +60,11 @@ ace.config.setModuleUrl('ace/mode/markdown', aceModeMarkdown);
 ace.config.setModuleUrl('ace/theme/xcode', aceThemeXcode);
 marked.setOptions({
     highlight: function highlight(code, lang) {
-        try {
+        if (hljs.getLanguage(lang)) {
             return hljs.highlight(lang, code).value;
-        } catch (e) {
-            console.warn(e);
-            return code;
         }
+
+        return code;
     },
 });
 
@@ -93,8 +92,16 @@ ace.listen = (editor, listener) => {
             const html = marked(content, { renderer });
 
             listener(html, () => {
-                console.log(mermaid);
-                if (mermaid) mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+                if (mermaid) {
+                    const $mermaids = document.querySelectorAll('.mermaid');
+
+                    Array.from($mermaids).forEach(($item) => {
+                        $item.removeAttribute('data-processed');
+                    });
+                    try {
+                        mermaid.init(undefined, $mermaids);
+                    } catch (e) { console.error(e) }
+                }
             });
         }, 800);
     });
