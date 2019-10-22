@@ -36,19 +36,69 @@ hljs.registerLanguage('sql', sql);
 
 let mermaid;
 let MathJax;
+const regMermaid = /<div class="mermaid">[\s\S]+?<\/div>/gm;
 const renderer = new marked.Renderer();
+
+/**
+ * 使用 mermaid.js 渲染流程图
+ *
+ * @param {Object} data 渲染数据
+ */
+function renderMermaid({ html, prevHtml }) {
+    const $mermaids = document.querySelectorAll('.mermaid');
+
+    // 没有 mermaid 代码
+    if ($mermaids.length === 0) return;
+
+    // 动态加载
+    if (!mermaid) {
+        import(/* webpackChunkName: "mermaid" */ 'mermaid').then((res) => {
+            mermaid = res.default;
+            mermaid.init();
+        }).catch(() => {});
+        return;
+    }
+
+    const arrCode = html.match(regMermaid);
+    const arrPrevCode = prevHtml.match(regMermaid);
+
+    Array.from($mermaids).forEach(($item, i) => {
+        // 只有改变了 mermaid 代码才会重新渲染
+        if (arrCode[i] !== arrPrevCode[i]) {
+            // mermaid 在 init 后会加上 `data-processed` 属性，表明已渲染过，以后
+            // 不会重新渲染，只有移除此属性才会生效
+            // @see https://github.com/knsv/mermaid/issues/29
+            $item.removeAttribute('data-processed');
+        }
+    });
+    try {
+        mermaid.init(undefined, $mermaids);
+    } catch (e) { console.error(e); }
+}
+
+function renderMathJax({ html, prevHtml }) {
+    if (!MathJax) {
+        import(/* webpackChunkName: "MathJax" */'mathjax').then((res) => {
+            MathJax = res.default;
+            console.log(MathJax)
+            MathJax.init({
+                loader: {
+                    loader: ['input/tex', 'output/svg'],
+                },
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    packages: ['base', 'ams'],
+                },
+            });
+        });
+        return;
+    }
+}
 
 // monkey patch 猴子补丁
 renderer.defaultCode = renderer.code;
 renderer.code = (code, lang) => {
     if (code.match(/^(graph|sequenceDiagram)/)) {
-        if (!mermaid) {
-            import(/* webpackChunkName: "mermaid" */ 'mermaid').then((res) => {
-                mermaid = res.default;
-                mermaid.init();
-            }).catch(() => {});
-            return `<div class="mermaid">${code}</div>`;
-        }
         return `<div class="mermaid">${code}</div>`;
     }
 
@@ -82,7 +132,6 @@ ace.init = (selector) => {
 };
 ace.listen = (editor, listener) => {
     let timer = null;
-    const regMermaid = /<div class="mermaid">[\s\S]+?<\/div>/gm;
 
     editor.on('change', () => {
         clearTimeout(timer);
@@ -93,21 +142,8 @@ ace.listen = (editor, listener) => {
             const html = marked(content, { renderer });
 
             listener(html, (prevHtml) => {
-                // mermaid 重新渲染，如果改变了的话
-                if (mermaid) {
-                    const $mermaids = document.querySelectorAll('.mermaid');
-                    const arrCode = html.match(regMermaid);
-                    const arrPrevCode = prevHtml.match(regMermaid);
-
-                    Array.from($mermaids).forEach(($item, i) => {
-                        if (arrCode[i] !== arrPrevCode[i]) {
-                            $item.removeAttribute('data-processed');
-                        }
-                    });
-                    try {
-                        mermaid.init(undefined, $mermaids);
-                    } catch (e) { console.error(e) }
-                }
+                renderMermaid({ html, prevHtml });
+                renderMathJax({ html, prevHtml });
             });
         }, 800);
     });
