@@ -78,19 +78,36 @@ function renderMermaid({ html, prevHtml }) {
 
 function renderMathJax({ html, prevHtml }) {
     if (!MathJax) {
-        import(/* webpackChunkName: "MathJax" */'mathjax').then((res) => {
-            MathJax = res.default;
-            console.log(MathJax)
-            MathJax.init({
-                loader: {
-                    loader: ['input/tex', 'output/svg'],
-                },
-                tex: {
-                    inlineMath: [['$', '$'], ['\\(', '\\)']],
-                    packages: ['base', 'ams'],
-                },
-            });
+        const $script = document.createElement('script');
+        const $markdowned = document.querySelector('.markdowned');
+
+        $script.src = 'https://unpkg.com/mathjax@3.0.0/es5/tex-chtml.js';
+        $script.async = true;
+        window.MathJax = {
+            startup: {
+                typeset: false,
+            },
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+            },
+        };
+        $script.addEventListener('load', () => {
+            MathJax = window.MathJax;
         });
+
+        document.body.appendChild($script);
+        // import(/* webpackChunkName: "MathJax" */'mathjax').then((res) => {
+        //     MathJax = res.default;
+        //     MathJax.init({
+        //         loader: {
+        //             loader: ['input/tex', 'output/svg'],
+        //         },
+        //         tex: {
+        //             inlineMath: [['$', '$'], ['\\(', '\\)']],
+        //             packages: ['base', 'ams'],
+        //         },
+        //     });
+        // });
         return;
     }
 }
