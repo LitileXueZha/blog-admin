@@ -35,7 +35,6 @@ hljs.registerLanguage('php', php);
 hljs.registerLanguage('sql', sql);
 
 let mermaid;
-let mermaidChanged = false;
 let MathJax;
 const renderer = new marked.Renderer();
 
@@ -76,12 +75,14 @@ ace.init = (selector) => {
         printMarginColumn: 120,
         wrap: true,
         foldStyle: 'markbegin',
+        // scrollPastEnd: 1,
     });
 
     return editor;
 };
 ace.listen = (editor, listener) => {
     let timer = null;
+    const regMermaid = /<div class="mermaid">[\s\S]+?<\/div>/gm;
 
     editor.on('change', () => {
         clearTimeout(timer);
@@ -91,12 +92,17 @@ ace.listen = (editor, listener) => {
             const content = editor.getValue();
             const html = marked(content, { renderer });
 
-            listener(html, () => {
+            listener(html, (prevHtml) => {
+                // mermaid 重新渲染，如果改变了的话
                 if (mermaid) {
                     const $mermaids = document.querySelectorAll('.mermaid');
+                    const arrCode = html.match(regMermaid);
+                    const arrPrevCode = prevHtml.match(regMermaid);
 
-                    Array.from($mermaids).forEach(($item) => {
-                        $item.removeAttribute('data-processed');
+                    Array.from($mermaids).forEach(($item, i) => {
+                        if (arrCode[i] !== arrPrevCode[i]) {
+                            $item.removeAttribute('data-processed');
+                        }
                     });
                     try {
                         mermaid.init(undefined, $mermaids);
