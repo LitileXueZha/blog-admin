@@ -36,7 +36,10 @@ hljs.registerLanguage('sql', sql);
 
 let mermaid;
 let MathJax;
+// let $mathjax;
 const regMermaid = /<div class="mermaid">[\s\S]+?<\/div>/gm;
+// const regMathJax = /(\$|\\\()[\s\S]+(\$|\\\))/m;
+const regMathJax = /((\$\$|\$|\\\()[\s\S]+?(\$\$|\$|\\\)))/gm;
 const renderer = new marked.Renderer();
 
 /**
@@ -76,13 +79,19 @@ function renderMermaid({ html, prevHtml }) {
     } catch (e) { console.error(e); }
 }
 
-function renderMathJax({ html, prevHtml }) {
+function renderMathJax() {
+    const $mathjax = document.querySelectorAll('.mathjax');
+
+    // 没有 latex 公式
+    if ($mathjax.length === 0) return;
+
     if (!MathJax) {
+        // 目前发现只能通过 cdn 方式引入。本地提供不支持模块化
         const $script = document.createElement('script');
-        const $markdowned = document.querySelector('.markdowned');
 
         $script.src = 'https://unpkg.com/mathjax@3.0.0/es5/tex-chtml.js';
         $script.async = true;
+        // mathjax v3 的配置
         window.MathJax = {
             startup: {
                 typeset: false,
@@ -93,6 +102,7 @@ function renderMathJax({ html, prevHtml }) {
         };
         $script.addEventListener('load', () => {
             MathJax = window.MathJax;
+            MathJax.typesetPromise($mathjax).catch(MathJax.typesetClear);
         });
 
         document.body.appendChild($script);
@@ -110,6 +120,9 @@ function renderMathJax({ html, prevHtml }) {
         // });
         return;
     }
+
+    MathJax.typesetClear();
+    MathJax.typesetPromise($mathjax);
 }
 
 // monkey patch 猴子补丁
@@ -120,6 +133,14 @@ renderer.code = (code, lang) => {
     }
 
     return renderer.defaultCode(code, lang);
+};
+renderer.defaultParagraph = renderer.paragraph;
+renderer.paragraph = (str) => {
+    // 转化 latex 公式
+    console.log(str)
+    const text = str.replace(regMathJax, '<span class="mathjax">$1</span>');
+
+    return renderer.defaultParagraph(text);
 };
 
 ace.config.setModuleUrl('ace/mode/markdown', aceModeMarkdown);
