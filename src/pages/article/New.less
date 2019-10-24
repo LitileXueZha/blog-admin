@@ -66,10 +66,57 @@
     }
 }
 
+// 全屏模式
+.markdowned:fullscreen {
+  position: relative;
+  margin-top: 0;
+  width: 100%;
+  padding: 0;
+  background: #f8f8f8;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    background: transparent;
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: @mainColor;
+
+    &:hover { background: #000 }
+  }
+
+  & > .title {
+    position: absolute;
+    left: 50%;
+    top: 70px;
+    display: block;
+    margin-left: -310px;
+    width: 620px;
+  }
+
+  & > .body {
+    width: 800px;
+    margin: 20px auto;
+    padding: 100px 90px 70px 90px;
+    background-color: #fff;
+    box-shadow: 0 1px 10px 2px rgba(0,0,0,.06);
+    border: 1px solid #e5e5e5;
+    box-sizing: border-box;
+  }
+}
+
 .markdowned {
     color: #555;
     line-height: 20px;
     overflow: hidden;
+
+    .title {
+      display: none;
+      margin: 0;
+      font-weight: 500;
+    }
       
     h1, h2, h3, h4, h5, h6 {
       margin: 32px 0;
@@ -117,6 +164,7 @@
       display: block;
       padding: 16px;
       border-radius: 3px;
+      overflow-x: scroll;
     }
   
     em {

@@ -63,15 +63,17 @@ function renderMermaid({ html, prevHtml }) {
     const arrCode = html.match(regMermaid);
     const arrPrevCode = prevHtml.match(regMermaid);
 
-    Array.from($mermaids).forEach(($item, i) => {
-        // 只有改变了 mermaid 代码才会重新渲染
-        if (arrCode[i] !== arrPrevCode[i]) {
-            // mermaid 在 init 后会加上 `data-processed` 属性，表明已渲染过，以后
-            // 不会重新渲染，只有移除此属性才会生效
-            // @see https://github.com/knsv/mermaid/issues/29
-            $item.removeAttribute('data-processed');
-        }
-    });
+    if (arrPrevCode) {
+        Array.from($mermaids).forEach(($item, i) => {
+            // 只有改变了 mermaid 代码才会重新渲染
+            if (arrCode[i] !== arrPrevCode[i]) {
+                // mermaid 在 init 后会加上 `data-processed` 属性，表明已渲染过，以后
+                // 不会重新渲染，只有移除此属性才会生效
+                // @see https://github.com/knsv/mermaid/issues/29
+                $item.removeAttribute('data-processed');
+            }
+        });
+    }
     try {
         mermaid.init(undefined, $mermaids);
     } catch (e) { console.error(e); }
@@ -169,7 +171,19 @@ ace.init = (selector) => {
 };
 ace.listen = (editor, listener) => {
     let timer = null;
+    const cacheArticle = localStorage.getItem('cache_article') || '';
+    const cacheArticleHtml = localStorage.getItem('cache_article_html') || '';
 
+    if (cacheArticle) {
+        editor.setValue(cacheArticle);
+        editor.clearSelection();
+        setTimeout(() => {
+            listener(cacheArticleHtml, (prevHtml) => {
+                renderMermaid({ html: cacheArticleHtml, prevHtml });
+                renderMathJax();
+            });
+        }, 300);
+    }
     editor.on('change', () => {
         clearTimeout(timer);
 
@@ -178,9 +192,11 @@ ace.listen = (editor, listener) => {
             const content = editor.getValue();
             const html = marked(content);
 
+            localStorage.setItem('cache_article', content);
+            localStorage.setItem('cache_article_html', html);
             listener(html, (prevHtml) => {
                 renderMermaid({ html, prevHtml });
-                renderMathJax({ html, prevHtml });
+                renderMathJax();
             });
         }, 800);
     });

@@ -29,6 +29,7 @@ class ArticleCreate extends React.Component {
 
     componentDidMount() {
         this.ace = ace.init('ace-editor', this.markdownRef.current);
+        window.ace = this.ace;
         ace.listen(this.ace, (html, cb) => {
             const { html: _html } = this.state;
 
@@ -36,6 +37,19 @@ class ArticleCreate extends React.Component {
                 { html },
                 () => cb(_html),
             );
+        });
+        window.addEventListener('resize', () => {
+            // 使用 fullscreenElement 查询当前全屏元素出现问题。退出后仍存在，但是 F12 时居然没了
+            // FIXME: 我无能为力...
+            // const isFullscreen = document.fullscreenElement
+            //     || document.mozFullScreenElement
+            //     || document.webkitFullscreenElement;
+
+            // 修复退出全屏后 ace 编辑器大小问题
+            if (this.isFullscreen) {
+                this.isFullscreen = false;
+                setTimeout(() => this.ace.resize(), 100);
+            }
         });
     }
 
@@ -49,8 +63,19 @@ class ArticleCreate extends React.Component {
             case 'input':
                 this.setState({ fullscreen: !fullscreen }, () => this.ace.resize());
                 break;
-            case 'look':
+            case 'look': {
+                const $m = this.markdownRef.current;
+                const fullScreen = $m.requestFullscreen
+                    || $m.webkitRequestFullscreen
+                    || $m.mozRequestFullScreen
+                    || $m.msRequestFullscreen;
+
+                fullScreen.call($m);
+                setTimeout(() => {
+                    this.isFullscreen = true;
+                }, 100);
                 break;
+            }
             default:
                 break;
         }
@@ -65,7 +90,8 @@ class ArticleCreate extends React.Component {
 
                 <div id="ace-editor" className="article-textarea" />
                 <div className="article-preview markdowned" ref={this.markdownRef} title="预览">
-                    {htmlReactParser(html)}
+                    <h1 className="title">文章标题~文章标题~文章标题~</h1>
+                    <div className="body">{htmlReactParser(html)}</div>
                 </div>
             </div>
         );
