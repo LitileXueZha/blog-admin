@@ -21,7 +21,6 @@ import http from 'highlight.js/lib/languages/http';
 import php from 'highlight.js/lib/languages/php';
 import sql from 'highlight.js/lib/languages/sql';
 
-import Msg from '../components/message';
 
 // 高亮语法
 hljs.registerLanguage('html', xml);
@@ -38,8 +37,7 @@ let mermaid;
 let MathJax;
 // let $mathjax;
 const regMermaid = /<div class="mermaid">[\s\S]+?<\/div>/gm;
-// const regMathJax = /(\$|\\\()[\s\S]+(\$|\\\))/m;
-const regMathJax = /((\$\$|\$|\\\()[\s\S]+?(\$\$|\$|\\\)))/gm;
+const regMathJax = /(\$|\\\()[\s\S]+?(\$|\\\))/gm;
 const renderer = new marked.Renderer();
 
 /**
@@ -134,18 +132,19 @@ renderer.code = (code, lang) => {
 
     return renderer.defaultCode(code, lang);
 };
-renderer.defaultParagraph = renderer.paragraph;
-renderer.paragraph = (str) => {
-    // 转化 latex 公式
-    console.log(str)
-    const text = str.replace(regMathJax, '<span class="mathjax">$1</span>');
+renderer.defaultCodespan = renderer.codespan;
+renderer.codespan = (code) => {
+    if (code.match(regMathJax)) {
+        return `<span class="mathjax">${code}</span>`;
+    }
 
-    return renderer.defaultParagraph(text);
+    return renderer.defaultCodespan(code);
 };
 
 ace.config.setModuleUrl('ace/mode/markdown', aceModeMarkdown);
 ace.config.setModuleUrl('ace/theme/xcode', aceThemeXcode);
 marked.setOptions({
+    renderer,
     highlight: function highlight(code, lang) {
         if (hljs.getLanguage(lang)) {
             return hljs.highlight(lang, code).value;
@@ -177,7 +176,7 @@ ace.listen = (editor, listener) => {
         // 简易防抖
         timer = setTimeout(() => {
             const content = editor.getValue();
-            const html = marked(content, { renderer });
+            const html = marked(content);
 
             listener(html, (prevHtml) => {
                 renderMermaid({ html, prevHtml });
