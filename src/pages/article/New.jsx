@@ -29,7 +29,6 @@ class ArticleCreate extends React.Component {
 
     componentDidMount() {
         this.ace = ace.init('ace-editor', this.markdownRef.current);
-        window.ace = this.ace;
         ace.listen(this.ace, (html, cb) => {
             const { html: _html } = this.state;
 
@@ -76,6 +75,9 @@ class ArticleCreate extends React.Component {
                 }, 100);
                 break;
             }
+            case 'next':
+                this.props.history.push('/article/new-next');
+                break;
             default:
                 break;
         }

@@ -8,6 +8,7 @@ import Login from './pages/login';
 import Tag from './pages/tag';
 import NotFound from './pages/NotFound';
 import ArticleCreate from './pages/article/New';
+import ArticleDetail from './pages/article/NewNext';
 
 export default function Routes() {
     return (
@@ -20,6 +21,7 @@ export default function Routes() {
                             <Route path="/" component={Index} exact />
                             <Route path="/article" component={Article} exact />
                             <Route path="/article/new" component={ArticleCreate} exact />
+                            <Route path="/article/new-next" component={ArticleDetail} exact />
                             <Route path="/tag" component={Tag} />
                             <Route component={NotFound} />
                         </Switch>

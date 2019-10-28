@@ -14,6 +14,7 @@ const BREADCRUMB = {
         title: '写文章',
         icon: 'brush',
     },
+    '/article/new-next': '文章详情',
     '/tag': '标签',
     '/msg': '留言',
     '/comment': '评论',
@@ -45,7 +46,7 @@ function BreadCrumb(props) {
         if (i === paths.length - 1) {
             // 最后一个
             crumb = (
-                <span className="breadcrumb-item active">
+                <span className="breadcrumb-item active" key="last">
                     {icon}
                     {title}
                 </span>

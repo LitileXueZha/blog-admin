@@ -89,7 +89,7 @@ class Tag extends React.Component {
                     open={showModal}
                     onClose={this.hideModal}
                 >
-                    <DialogTitle>创建标签</DialogTitle>
+                    <DialogTitle>{currTag.id ? '编辑标签' : '创建标签'}</DialogTitle>
                     <DialogContent>
                         <FormTag ref={this.submitBtn} defaultValue={currTag} onSubmit={this.handleSubmit} />
                     </DialogContent>
