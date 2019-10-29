@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core';
 
 import { getTagList } from '../../store/tag';
+import FormArticle from './FormArticle';
+import './NewNext.less';
 
 class ArticleDetial extends React.Component {
     constructor(props) {
@@ -22,27 +24,16 @@ class ArticleDetial extends React.Component {
         this.props.getTagList({ status: 1 });
     }
 
+    handleSubmit = (data) => {
+        console.log(data);
+    };
+
     render() {
+        const { tag } = this.props;
+
         return (
             <div className="container">
-                <form>
-                    <TextField label="标题" />
-                    <TextField label="文章摘要" multiline />
-                    <FormControl>
-                        <FormLabel>分类</FormLabel>
-                        <RadioGroup name="category" row>
-                            <FormControlLabel label="生活" value="life" control={<Radio color="primary" />} />
-                            <FormControlLabel label="笔记" value="note" control={<Radio />} />
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel>标签</FormLabel>
-                        <RadioGroup name="tag" row>
-                            <FormControlLabel label="生活" value="life" control={<Radio color="primary" />} />
-                            <FormControlLabel label="笔记" value="note" control={<Radio />} />
-                        </RadioGroup>
-                    </FormControl>
-                </form>
+                <FormArticle onSubmit={this.handleSubmit} tagList={tag.items} />
             </div>
         );
     }
