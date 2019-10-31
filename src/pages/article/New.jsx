@@ -15,7 +15,7 @@ import ace from '../../utils/ace';
 import './New.less';
 import StatusBar from './StatusBar';
 
-class ArticleCreate extends React.Component {
+class ArticleEditor extends React.Component {
     constructor(props) {
         super(props);
 
@@ -100,4 +100,4 @@ class ArticleCreate extends React.Component {
     }
 }
 
-export default ArticleCreate;
+export default ArticleEditor;

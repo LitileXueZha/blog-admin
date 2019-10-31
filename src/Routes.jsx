@@ -21,7 +21,7 @@ export default function Routes() {
                             <Route path="/" component={Index} exact />
                             <Route path="/article" component={Article} exact />
                             <Route path="/article/new" component={ArticleCreate} exact />
-                            <Route path="/article/new-next" component={ArticleDetail} exact />
+                            <Route path="/article/:id" component={ArticleDetail} />
                             <Route path="/tag" component={Tag} />
                             <Route component={NotFound} />
                         </Switch>

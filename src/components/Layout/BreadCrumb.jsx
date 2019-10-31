@@ -14,7 +14,7 @@ const BREADCRUMB = {
         title: '写文章',
         icon: 'brush',
     },
-    '/article/new-next': '文章详情',
+    '/article/*': '文章详情',
     '/tag': '标签',
     '/msg': '留言',
     '/comment': '评论',
@@ -25,12 +25,26 @@ const BREADCRUMB = {
 function BreadCrumb(props) {
     const paths = props.location.pathname.split('/');
     let to = '';
-    const crumbs = [];
+    let crumbs = [];
 
     for (let i = 1; i < paths.length; i ++) {
-        to += `/${paths[i]}`;
+        const exactTo = `${to}/${paths[i]}`;
+        // 通配符匹配
+        const wildcard = `${to}/*`;
 
-        const bread = BREADCRUMB[to] || BREADCRUMB[404];
+        if (exactTo in BREADCRUMB) {
+            to = exactTo;
+        } else if (wildcard in BREADCRUMB) {
+            to = wildcard;
+        } else {
+            // 404 界面
+            to = 404;
+            document.title = BREADCRUMB[to];
+            crumbs = <span className="breadcrumb-item active">{BREADCRUMB[to]}</span>;
+            break;
+        }
+
+        const bread = BREADCRUMB[to];
         let title = bread;
         let icon;
         let crumb = '';

@@ -36,7 +36,9 @@ class Article extends React.Component {
 
         return items.map((val) => (
             <TableRow style={{ verticalAlign: 'top' }} key={val.id}>
-                <TableCell>{val.title}</TableCell>
+                <TableCell>
+                    <Link to={`/article/${val.id}`}>{val.title}</Link>
+                </TableCell>
                 <TableCell style={{ width: 400 }}>{val.summary}</TableCell>
                 <TableCell>{ARTICLE_TYPE[val.category]}</TableCell>
                 <TableCell>{val.tag_name}</TableCell>

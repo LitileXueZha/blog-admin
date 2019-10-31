@@ -1,6 +1,41 @@
 @import '../../assets/styles/variables.less';
 
 .form-article {
-    width: 800px;
-    margin: @mainSpace auto;
+    padding: 0 @mainSpace * 2 @mainSpace * 2 @mainSpace * 2;
+
+    .form-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: @mainSpace * 2;
+
+        .form-label {
+            display: inline-block;
+            width: 16px * 4;
+            margin-right: @mainSpace * 2;
+            color: @textColorDesc;
+            font-size: 16px;
+        }
+    }
+
+    .input-title {
+        color: @textColorTitle;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .textarea-count {
+        float: right;
+        position: relative;
+        top: -(@mainSpace * 2 + 18px);
+        color: #ccc;
+    }
+
+    .tag-list {
+        width: 50%;
+
+        .tag {
+            margin: 0 @mainSpace @mainSpace 0;
+        }
+    }
 }
