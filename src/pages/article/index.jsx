@@ -9,6 +9,7 @@ import {
     TableCell,
     TableBody,
     Button,
+    Tooltip,
 } from '@material-ui/core';
 
 import './index.less';
@@ -37,7 +38,7 @@ class Article extends React.Component {
         return items.map((val) => (
             <TableRow style={{ verticalAlign: 'top' }} key={val.id}>
                 <TableCell>
-                    <Link to={`/article/${val.id}`}>{val.title}</Link>
+                    <Link to={`/article/new?id=${val.id}`}>{val.title}</Link>
                 </TableCell>
                 <TableCell style={{ width: 400 }}>{val.summary}</TableCell>
                 <TableCell>{ARTICLE_TYPE[val.category]}</TableCell>
@@ -67,7 +68,14 @@ class Article extends React.Component {
                             <TableCell style={{ width: 400 }}>摘要</TableCell>
                             <TableCell>分类</TableCell>
                             <TableCell>标签</TableCell>
-                            <TableCell>状态</TableCell>
+                            <TableCell>
+                                <Tooltip title="点击以修改文章的状态">
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        状态
+                                        <ion-icon name="ios-help-circle" style={{ fontSize: 18, color: '#999' }} />
+                                    </div>
+                                </Tooltip>
+                            </TableCell>
                             <TableCell>创建时间</TableCell>
                         </TableRow>
                     </TableHead>

@@ -2,6 +2,8 @@ import fetch from '../utils/request';
 
 const GET_ARTICLE_LIST = 'GET_ARTICLE_LIST';
 const GET_ARTICLE = 'GET_ARTICLE';
+const ADD_ARTICLE = 'ADD_ARTICLE';
+const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
 const initialState = {
     total: 0,
     items: [],
@@ -11,9 +13,6 @@ const initialState = {
 export function getArticleList(params) {
     return (dispatch) => fetch('/articles', {
         method: 'GET',
-        headers: {
-            Authorization: 'Bearer tao',
-        },
         params,
     }).then((res) => dispatch({
         type: GET_ARTICLE_LIST,
@@ -29,6 +28,27 @@ export function getArticle(id) {
         }));
 }
 
+export function addArticle(data) {
+    return (dispatch) => fetch('/articles', {
+        method: 'POST',
+        body: data,
+    }).then((res) => dispatch({
+        type: ADD_ARTICLE,
+        payload: res,
+    }));
+}
+
+export function updateArticle(id, data) {
+    return (dispatch) => fetch(`/articles/${id}`, {
+        method: 'PUT',
+        body: data,
+    }).then((res) => dispatch({
+        type: UPDATE_ARTICLE,
+        payload: res,
+    }));
+}
+
+// reducer
 export function article(state = initialState, action) {
     switch (action.type) {
         case GET_ARTICLE_LIST:

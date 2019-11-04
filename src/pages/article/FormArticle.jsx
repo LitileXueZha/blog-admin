@@ -10,11 +10,7 @@ import {
     Chip,
     Avatar,
     Switch,
-    Dialog,
-    DialogContent,
 } from '@material-ui/core';
-
-import Msg from '../../components/message';
 
 export default function FormArticle(props) {
     const { defaultValue, type } = props;
@@ -35,6 +31,11 @@ export default function FormArticle(props) {
         if (!formData.title) {
             setError(true);
             return;
+        }
+
+        if (form.status && form.status.checked) {
+            // 快速上线操作
+            formData.status = 1;
         }
 
         props.onSubmit(formData);
@@ -63,7 +64,7 @@ export default function FormArticle(props) {
     };
 
     useEffect(() => {
-        setTagId(defaultValue.tag);
+        setTagId(defaultValue.tag || 'none');
         setCount((defaultValue.summary || '').length);
     }, [defaultValue]);
 
@@ -102,7 +103,7 @@ export default function FormArticle(props) {
                 && (
                     <FormControl className="form-item" style={{ marginBottom: 0 }}>
                         <FormLabel className="form-label">发布状态</FormLabel>
-                        <FormControlLabel label="上线" control={<Switch color="primary" />} />
+                        <FormControlLabel label="上线" control={<Switch name="status" color="primary" />} />
                     </FormControl>
                 )}
             <FormControl className="form-item">

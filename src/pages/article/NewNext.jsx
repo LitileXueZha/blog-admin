@@ -13,7 +13,8 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 
 import { getTagList } from '../../store/tag';
-import { getArticle } from '../../store/article';
+import { getArticle, addArticle, updateArticle } from '../../store/article';
+import Msg from '../../components/message';
 import FormArticle from './FormArticle';
 import './NewNext.less';
 
@@ -36,8 +37,23 @@ class ArticleDetial extends React.Component {
         this.props.getTagList({ status: 1 });
     }
 
-    handleSubmit = (data) => {
-        console.log(data);
+    handleSubmit = async (data) => {
+        const content = localStorage.getItem('cache_article');
+        const body = { ...data, content };
+
+        if (this.id) {
+            // 更新
+            await this.props.updateArticle(this.id, body);
+            Msg.success('保存成功');
+        } else {
+            await this.props.addArticle(body);
+            Msg.success('创建成功');
+        }
+
+        this.props.history.replace('/article');
+        // 清空缓存
+        localStorage.removeItem('cache_article');
+        localStorage.removeItem('cache_article_html');
     };
 
     handleWrite = () => {
@@ -80,6 +96,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getTagList,
         getArticle,
+        addArticle,
+        updateArticle,
     }, dispatch);
 }
 

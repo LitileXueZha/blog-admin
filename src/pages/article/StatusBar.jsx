@@ -62,6 +62,12 @@ export default function StatusBar(props) {
             >
                 写完了
             </Button>
+            {props.showSave
+                && (
+                    <Button onClick={() => handleClick('save')} style={{ float: 'right', marginRight: 10 }}>
+                        直接保存
+                    </Button>
+                )}
         </div>
     );
 }

@@ -10,10 +10,13 @@ import {
     Menu,
 } from '@material-ui/core';
 import htmlReactParser from 'html-react-parser';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import ace from '../../utils/ace';
 import './New.less';
 import StatusBar from './StatusBar';
+import { getArticle, updateArticle } from '../../store/article';
 
 class ArticleEditor extends React.Component {
     constructor(props) {
@@ -25,6 +28,8 @@ class ArticleEditor extends React.Component {
             html: '',
         };
         this.markdownRef = React.createRef();
+        // 文章 id
+        this.id = new URLSearchParams(props.location.search).get('id');
     }
 
     componentDidMount() {
@@ -36,7 +41,7 @@ class ArticleEditor extends React.Component {
                 { html },
                 () => cb(_html),
             );
-        });
+        }, this.getArticleContent);
         window.addEventListener('resize', () => {
             // 使用 fullscreenElement 查询当前全屏元素出现问题。退出后仍存在，但是 F12 时居然没了
             // FIXME: 我无能为力...
@@ -51,6 +56,18 @@ class ArticleEditor extends React.Component {
             }
         });
     }
+
+    // 根据返回的内容渲染。`false` 代表使用缓存
+    getArticleContent = () => new Promise((resolve) => {
+        if (this.id) {
+            this.props.getArticle(this.id)
+                .then(({ payload }) => resolve(payload.content))
+                .catch(() => resolve(false));
+            return;
+        }
+
+        resolve(false);
+    });
 
     handleBarChange = (act) => {
         const { fullscreen } = this.state;
@@ -76,8 +93,14 @@ class ArticleEditor extends React.Component {
                 break;
             }
             case 'next':
-                this.props.history.push('/article/new-next');
+                this.props.history.push(`/article/${this.id || 'new-next'}`);
                 break;
+            case 'save': {
+                const content = localStorage.getItem('cache_article');
+
+                this.props.updateArticle(this.id, { content });
+                break;
+            }
             default:
                 break;
         }
@@ -85,14 +108,15 @@ class ArticleEditor extends React.Component {
 
     render() {
         const { preview, fullscreen, html } = this.state;
+        const { article } = this.props;
 
         return (
             <div className={`container-article-new ${preview} ${fullscreen && 'fullscreen'}`}>
-                <StatusBar onChange={this.handleBarChange} fullscreen={fullscreen} />
+                <StatusBar onChange={this.handleBarChange} fullscreen={fullscreen} showSave={this.id} />
 
                 <div id="ace-editor" className="article-textarea" />
                 <div className="article-preview markdowned" ref={this.markdownRef} title="预览">
-                    <h1 className="title">文章标题~文章标题~文章标题~</h1>
+                    <h1 className="title">{article.title || '文章标题~文章标题~文章标题~'}</h1>
                     <div className="body">{htmlReactParser(html)}</div>
                 </div>
             </div>
@@ -100,4 +124,17 @@ class ArticleEditor extends React.Component {
     }
 }
 
-export default ArticleEditor;
+function mapStateToProps(store) {
+    return {
+        article: store.article.current,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        getArticle,
+        updateArticle,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleEditor);

@@ -169,21 +169,19 @@ ace.init = (selector) => {
 
     return editor;
 };
-ace.listen = (editor, listener) => {
+ace.listen = (editor, listener, init) => {
     let timer = null;
-    const cacheArticle = localStorage.getItem('cache_article') || '';
-    const cacheArticleHtml = localStorage.getItem('cache_article_html') || '';
 
-    if (cacheArticle) {
-        editor.setValue(cacheArticle);
-        editor.clearSelection();
-        setTimeout(() => {
-            listener(cacheArticleHtml, (prevHtml) => {
-                renderMermaid({ html: cacheArticleHtml, prevHtml });
-                renderMathJax();
-            });
-        }, 300);
-    }
+    // 初始化编辑器内容
+    init().then((value) => {
+        // 指明使用缓存初始化
+        if (value === false) {
+            ace.initContent(editor, { useCache: true, listener });
+            return;
+        }
+
+        ace.initContent(editor, { content: value, listener });
+    });
     editor.on('change', () => {
         clearTimeout(timer);
 
@@ -192,13 +190,38 @@ ace.listen = (editor, listener) => {
             const content = editor.getValue();
             const html = marked(content);
 
+            // 设置缓存
             localStorage.setItem('cache_article', content);
             localStorage.setItem('cache_article_html', html);
+            // 通知 react 渲染
             listener(html, (prevHtml) => {
+                // 渲染完成后的回调，进行 mermaid 与 mathjax 渲染
                 renderMermaid({ html, prevHtml });
                 renderMathJax();
             });
         }, 800);
+    });
+};
+ace.initContent = (editor, opts) => {
+    let { content, useCache, listener } = opts;
+    let cacheHtml;
+
+    // 指明使用缓存初始化
+    if (useCache) {
+        content = localStorage.getItem('cache_article');
+        cacheHtml = localStorage.getItem('cache_article_html');
+    }
+    // 无内容，不渲染
+    if (!content) return;
+
+    editor.setValue(content);
+    editor.clearSelection();
+
+    const html = cacheHtml || marked(content);
+
+    listener(html, (prevHtml) => {
+        renderMermaid({ html, prevHtml });
+        renderMathJax();
     });
 };
 
