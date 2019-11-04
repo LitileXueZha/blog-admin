@@ -10,10 +10,14 @@ import {
     TableBody,
     Button,
     Tooltip,
+    ButtonBase,
+    DialogContent,
+    DialogActions,
+    Popover,
 } from '@material-ui/core';
 
 import './index.less';
-import { getArticleList } from '../../store/article';
+import { getArticleList, updateArticle } from '../../store/article';
 import { ARTICLE_TYPE, ARTICLE_STATUS } from '../../utils/constants';
 import Pagination from '../../components/Pagination';
 
@@ -22,6 +26,9 @@ class Article extends React.Component {
         super(props);
 
         this.state = {
+            open: false,
+            current: {}, // 当前编辑的文章
+            anchorEl: null,
         };
     }
 
@@ -31,6 +38,27 @@ class Article extends React.Component {
             size,
         });
     }
+
+    showModal = (e, article) => {
+        this.setState({
+            open: true,
+            current: article,
+            anchorEl: e.target,
+        });
+    };
+
+    hideModal = () => {
+        this.setState({ open: false });
+    };
+
+    handleStatusChange = () => {
+        const { id, status } = this.state.current;
+        // 已上线修改为下线，否则为上线
+        const nextStatus = status === 1 ? 2 : 1;
+
+        this.props.updateArticle(id, { status: nextStatus })
+            .then(this.hideModal);
+    };
 
     renderRows() {
         const { items } = this.props.article;
@@ -43,7 +71,8 @@ class Article extends React.Component {
                 <TableCell style={{ width: 400 }}>{val.summary}</TableCell>
                 <TableCell>{ARTICLE_TYPE[val.category]}</TableCell>
                 <TableCell>{val.tag_name}</TableCell>
-                <TableCell>{ARTICLE_STATUS[val.status]}</TableCell>
+                <ButtonBase component={TableCell} onClick={(e) => this.showModal(e, val)}>{ARTICLE_STATUS[val.status]}</ButtonBase>
+                {/* <TableCell>{ARTICLE_STATUS[val.status]}</TableCell> */}
                 <TableCell>{moment(val.create_at).format('YYYY-MM-DD HH:mm')}</TableCell>
             </TableRow>
         ));
@@ -51,6 +80,7 @@ class Article extends React.Component {
 
     render() {
         const { article } = this.props;
+        const { open, current, anchorEl } = this.state;
 
         return (
             <div className="container">
@@ -83,6 +113,18 @@ class Article extends React.Component {
 
                     <Pagination count={article.total} onChange={this.getArticleList} />
                 </Table>
+
+                <Popover open={open} anchorEl={anchorEl} onClose={this.hideModal} className="popover">
+                    <DialogContent>
+                        <ion-icon name="ios-help-circle" class="icon-question" />
+                        确认将此文章
+                        <b style={{ fontWeight: 'bold' }}>{current.status === 1 ? '下线' : '上线'}</b>
+                        吗？
+                    </DialogContent>
+                    <DialogActions>
+                        <Button color="primary" size="small" onClick={this.handleStatusChange}>确定</Button>
+                    </DialogActions>
+                </Popover>
             </div>
         );
     }
@@ -96,6 +138,7 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
     return {
         getArticleList: (params) => dispatch(getArticleList(params)),
+        updateArticle: (id, data) => dispatch(updateArticle(id, data)),
     };
 }
 

@@ -55,6 +55,22 @@ export function article(state = initialState, action) {
             return { ...state, ...action.payload };
         case GET_ARTICLE:
             return { ...state, current: action.payload };
+        case UPDATE_ARTICLE: {
+            const current = action.payload;
+            const items = state.items.map((item) => {
+                if (item.id === current.id) {
+                    return current;
+                }
+
+                return item;
+            });
+
+            return {
+                ...state,
+                current,
+                items,
+            };
+        }
         default:
             return state;
     }
