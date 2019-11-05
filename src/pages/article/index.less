@@ -21,6 +21,10 @@
         
         tbody tr {
             transition: .3s;
+
+            &.dragging {
+                opacity: .5;
+            }
         }
         tbody tr:hover {
             background: rgba(@mainColor, .05);

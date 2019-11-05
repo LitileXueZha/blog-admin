@@ -66,11 +66,13 @@ class Article extends React.Component {
     handleDragStart = (e, data) => {
         // e.dataTransfer.setDragImage(document.images[0], 0, 0);
         e.dataTransfer.setData('id', data.id);
-        e.dataTransfer.dropEffect = 'move';
+        e.dataTransfer.dropEffect = 'link';
+        e.target.classList.add('dragging');
         this.trashRef.current.classList.add('drag-over');
     };
 
-    handleDragEnd = () => {
+    handleDragEnd = (e) => {
+        e.target.classList.remove('dragging');
         this.trashRef.current.classList.remove('drag-over');
     };
 
@@ -85,7 +87,7 @@ class Article extends React.Component {
 
     handleDragOver = (e) => {
         e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
+        e.dataTransfer.dropEffect = 'link';
     };
 
     renderRows() {
@@ -135,6 +137,7 @@ class Article extends React.Component {
                         onDrop={this.handleDrop}
                         onDragOver={this.handleDragOver}
                         ref={this.trashRef}
+                        draggable={false}
                     >
                         垃圾箱
                     </Button>
