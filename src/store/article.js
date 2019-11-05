@@ -4,6 +4,7 @@ const GET_ARTICLE_LIST = 'GET_ARTICLE_LIST';
 const GET_ARTICLE = 'GET_ARTICLE';
 const ADD_ARTICLE = 'ADD_ARTICLE';
 const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
+const MOVE_ARTICLE_TO_TRASH = 'MOVE_ARTICLE_TO_TRASH';
 const initialState = {
     total: 0,
     items: [],
@@ -48,6 +49,16 @@ export function updateArticle(id, data) {
     }));
 }
 
+export function moveArticleToTrash(id) {
+    return (dispatch) => fetch(`/articles/${id}`, {
+        method: 'PUT',
+        body: { status: 3 },
+    }).then(() => dispatch({
+        type: MOVE_ARTICLE_TO_TRASH,
+        payload: id,
+    }));
+}
+
 // reducer
 export function article(state = initialState, action) {
     switch (action.type) {
@@ -70,6 +81,12 @@ export function article(state = initialState, action) {
                 current,
                 items,
             };
+        }
+        case MOVE_ARTICLE_TO_TRASH: {
+            const items = state.items.filter((item) => item.id !== action.payload);
+            const total = state.total - 1;
+
+            return { ...state, items, total };
         }
         default:
             return state;

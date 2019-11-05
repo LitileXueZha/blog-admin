@@ -17,9 +17,10 @@ import {
 } from '@material-ui/core';
 
 import './index.less';
-import { getArticleList, updateArticle } from '../../store/article';
+import { getArticleList, updateArticle, moveArticleToTrash } from '../../store/article';
 import { ARTICLE_TYPE, ARTICLE_STATUS } from '../../utils/constants';
 import Pagination from '../../components/Pagination';
+import Msg from '../../components/message';
 
 class Article extends React.Component {
     constructor(props) {
@@ -30,12 +31,14 @@ class Article extends React.Component {
             current: {}, // 当前编辑的文章
             anchorEl: null,
         };
+        this.trashRef = React.createRef();
     }
 
     getArticleList = ({ page, size }) => {
         this.props.getArticleList({
             page: page + 1,
             size,
+            status: [0, 1, 2],
         });
     }
 
@@ -60,19 +63,51 @@ class Article extends React.Component {
             .then(this.hideModal);
     };
 
+    handleDragStart = (e, data) => {
+        // e.dataTransfer.setDragImage(document.images[0], 0, 0);
+        e.dataTransfer.setData('id', data.id);
+        e.dataTransfer.dropEffect = 'move';
+        this.trashRef.current.classList.add('drag-over');
+    };
+
+    handleDragEnd = () => {
+        this.trashRef.current.classList.remove('drag-over');
+    };
+
+    handleDrop = async (e) => {
+        e.preventDefault();
+
+        const id = e.dataTransfer.getData('id');
+
+        await this.props.moveArticleToTrash(id);
+        Msg.success('移动到垃圾箱成功');
+    };
+
+    handleDragOver = (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    };
+
     renderRows() {
         const { items } = this.props.article;
 
         return items.map((val) => (
-            <TableRow style={{ verticalAlign: 'top' }} key={val.id}>
+            <TableRow
+                style={{ verticalAlign: 'top' }}
+                key={val.id}
+                onDragStart={(e) => this.handleDragStart(e, val)}
+                onDragEnd={this.handleDragEnd}
+                draggable
+            >
                 <TableCell>
-                    <Link to={`/article/new?id=${val.id}`}>{val.title}</Link>
+                    <Link to={`/article/new?id=${val.id}`} draggable={false}>{val.title}</Link>
                 </TableCell>
                 <TableCell style={{ width: 400 }}>{val.summary}</TableCell>
                 <TableCell>{ARTICLE_TYPE[val.category]}</TableCell>
                 <TableCell>{val.tag_name}</TableCell>
-                <ButtonBase component={TableCell} onClick={(e) => this.showModal(e, val)}>{ARTICLE_STATUS[val.status]}</ButtonBase>
-                {/* <TableCell>{ARTICLE_STATUS[val.status]}</TableCell> */}
+                <TableCell className={`article-status ${val.status === 2 && 'offline'}`} onClick={(e) => this.showModal(e, val)}>
+                    {ARTICLE_STATUS[val.status]}
+                </TableCell>
                 <TableCell>{moment(val.create_at).format('YYYY-MM-DD HH:mm')}</TableCell>
             </TableRow>
         ));
@@ -84,14 +119,28 @@ class Article extends React.Component {
 
         return (
             <div className="container">
-                <Link to="/article/new">
+                <Link to="/article/new" tabIndex="-1">
                     <Button color="primary" variant="contained">
                         <ion-icon name="ios-brush" style={{ marginRight: 10 }} />
                         写文章
                     </Button>
                 </Link>
+                <Tooltip title="拖拽列表中某一项至此放入垃圾箱">
+                    <Button
+                        className="trash"
+                        component={Link}
+                        to="/article/trash"
+                        variant="outlined"
+                        startIcon={<ion-icon name="trash" />}
+                        onDrop={this.handleDrop}
+                        onDragOver={this.handleDragOver}
+                        ref={this.trashRef}
+                    >
+                        垃圾箱
+                    </Button>
+                </Tooltip>
 
-                <Table>
+                <Table className="article-list">
                     <TableHead>
                         <TableRow>
                             <TableCell>标题</TableCell>
@@ -139,6 +188,7 @@ function mapDispatchToProps(dispatch) {
     return {
         getArticleList: (params) => dispatch(getArticleList(params)),
         updateArticle: (id, data) => dispatch(updateArticle(id, data)),
+        moveArticleToTrash: (id) => dispatch(moveArticleToTrash(id)),
     };
 }
 

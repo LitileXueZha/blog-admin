@@ -1,14 +1,4 @@
 import React from 'react';
-import {
-    FormControlLabel,
-    Switch,
-    Button,
-    Select,
-    MenuItem,
-    Dialog,
-    DialogContent,
-    Menu,
-} from '@material-ui/core';
 import htmlReactParser from 'html-react-parser';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -116,7 +106,7 @@ class ArticleEditor extends React.Component {
 
                 <div id="ace-editor" className="article-textarea" />
                 <div className="article-preview markdowned" ref={this.markdownRef} title="预览">
-                    <h1 className="title">{article.title || '文章标题~文章标题~文章标题~'}</h1>
+                    <h1 className="title">{(this.id && article.title) || '文章标题~文章标题~文章标题~'}</h1>
                     <div className="body">{htmlReactParser(html)}</div>
                 </div>
             </div>

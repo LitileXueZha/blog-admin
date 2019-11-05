@@ -22,7 +22,11 @@ export default function fetch(url, opts = {}) {
 
     if (opts.params) {
         // GET 请求的查询参数，不能放到 body
-        apiUrl += `?${QueryString.stringify(opts.params)}`;
+        apiUrl += '?';
+        // php 获取 GET 请求的数组形式只支持 `xxx[]=&xxx[]=` 形式
+        apiUrl += QueryString.stringify(opts.params, {
+            arrayFormat: 'bracket',
+        });
     }
     if (opts.body) {
         // 发送数据必须手动转成 json 字符串
@@ -52,7 +56,8 @@ export default function fetch(url, opts = {}) {
                     Msg.error(res.error);
                 }
             })
-            .catch(() => {
+            .catch((e) => {
+                console.warn(e);
                 Msg.info('网络开小差了~');
             });
     });

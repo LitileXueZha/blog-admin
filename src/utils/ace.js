@@ -126,6 +126,7 @@ function renderMathJax() {
 }
 
 // monkey patch 猴子补丁
+// 1. mermaid 转化
 renderer.defaultCode = renderer.code;
 renderer.code = (code, lang) => {
     if (code.match(/^(graph|sequenceDiagram)/)) {
@@ -134,6 +135,7 @@ renderer.code = (code, lang) => {
 
     return renderer.defaultCode(code, lang);
 };
+// 2. mathjax 转化
 renderer.defaultCodespan = renderer.codespan;
 renderer.codespan = (code) => {
     if (code.match(regMathJax)) {
@@ -141,6 +143,15 @@ renderer.codespan = (code) => {
     }
 
     return renderer.defaultCodespan(code);
+};
+// 3. 文章内容里的一、二级标题转化成二、三级标题
+renderer.defaultHeading = renderer.heading;
+renderer.heading = (text, level, raw, slugger) => {
+    if (level < 3) {
+        level += 1;
+    }
+
+    return renderer.defaultHeading(text, level, raw, slugger);
 };
 
 ace.config.setModuleUrl('ace/mode/markdown', aceModeMarkdown);
@@ -169,19 +180,20 @@ ace.init = (selector) => {
 
     return editor;
 };
-ace.listen = (editor, listener, init) => {
+ace.listen = async (editor, listener, init) => {
     let timer = null;
 
     // 初始化编辑器内容
-    init().then((value) => {
-        // 指明使用缓存初始化
-        if (value === false) {
-            ace.initContent(editor, { useCache: true, listener });
-            return;
-        }
+    // 采用同步的写法，可以阻止渲染两次。因为 init 时会触发已监听的 change 事件，导致二次渲染
+    const value = await init();
 
+    if (value === false) {
+        // 指明使用缓存初始化
+        ace.initContent(editor, { useCache: true, listener });
+    } else {
         ace.initContent(editor, { content: value, listener });
-    });
+    }
+
     editor.on('change', () => {
         clearTimeout(timer);
 
