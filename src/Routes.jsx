@@ -9,6 +9,7 @@ import Tag from './pages/tag';
 import NotFound from './pages/NotFound';
 import ArticleCreate from './pages/article/New';
 import ArticleDetail from './pages/article/NewNext';
+import ArticleTrash from './pages/article/Trash';
 
 export default function Routes() {
     return (
@@ -21,7 +22,7 @@ export default function Routes() {
                             <Route path="/" component={Index} exact />
                             <Route path="/article" component={Article} exact />
                             <Route path="/article/new" component={ArticleCreate} exact />
-                            <Route path="/article/trash" component={NotFound} exact />
+                            <Route path="/article/trash" component={ArticleTrash} exact />
                             <Route path="/article/:id" component={ArticleDetail} />
                             <Route path="/tag" component={Tag} />
                             <Route component={NotFound} />

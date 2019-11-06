@@ -5,6 +5,7 @@ const GET_ARTICLE = 'GET_ARTICLE';
 const ADD_ARTICLE = 'ADD_ARTICLE';
 const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
 const MOVE_ARTICLE_TO_TRASH = 'MOVE_ARTICLE_TO_TRASH';
+const GET_ARTICLES_IN_TRASH = 'GET_ARTICLES_IN_TRASH';
 const initialState = {
     total: 0,
     items: [],
@@ -59,10 +60,19 @@ export function moveArticleToTrash(id) {
     }));
 }
 
+export function getArticlesInTrash(params) {
+    return (dispatch) => fetch('/articles/trash', { params })
+        .then((res) => dispatch({
+            type: GET_ARTICLES_IN_TRASH,
+            payload: res,
+        }));
+}
+
 // reducer
 export function article(state = initialState, action) {
     switch (action.type) {
         case GET_ARTICLE_LIST:
+        case GET_ARTICLES_IN_TRASH:
             return { ...state, ...action.payload };
         case GET_ARTICLE:
             return { ...state, current: action.payload };

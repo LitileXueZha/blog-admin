@@ -5,7 +5,7 @@ import {
     MenuItem,
     IconButton,
 } from '@material-ui/core';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './index.less';
 import Nav from './Nav';
@@ -50,4 +50,4 @@ function Layout(props) {
     );
 }
 
-export default withRouter(Layout);
+export default Layout;

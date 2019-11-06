@@ -10,6 +10,7 @@ import { withRouter, Link } from 'react-router-dom';
 const BREADCRUMB = {
     '/': '首页',
     '/article': '文章',
+    '/article/trash': '垃圾箱',
     '/article/new': {
         title: '写文章',
         icon: 'brush',
