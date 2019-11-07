@@ -7,6 +7,7 @@ import ace from '../../utils/ace';
 import './New.less';
 import StatusBar from './StatusBar';
 import { getArticle, updateArticle } from '../../store/article';
+import Msg from '../../components/message';
 
 class ArticleEditor extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class ArticleEditor extends React.Component {
             preview: 'input&view',
             fullscreen: false,
             html: '',
+            edited: false,
         };
         this.markdownRef = React.createRef();
         // 文章 id
@@ -25,10 +27,10 @@ class ArticleEditor extends React.Component {
     componentDidMount() {
         this.ace = ace.init('ace-editor', this.markdownRef.current);
         ace.listen(this.ace, (html, cb) => {
-            const { html: _html } = this.state;
+            const { html: _html, edited } = this.state;
 
             this.setState(
-                { html },
+                { html, edited: edited || _html },
                 () => cb(_html),
             );
         }, this.getArticleContent);
@@ -87,8 +89,17 @@ class ArticleEditor extends React.Component {
                 break;
             case 'save': {
                 const content = localStorage.getItem('cache_article');
+                let $tmp = document.createElement('p');
 
-                this.props.updateArticle(this.id, { content });
+                // 使用 dom 提取纯文本
+                $tmp.innerHTML = localStorage.getItem('cache_article_html');
+
+                const { textContent } = $tmp;
+
+                // 释放内存
+                $tmp = null;
+                this.props.updateArticle(this.id, { content, text_content: textContent })
+                    .then(() => Msg.success('保存成功'));
                 break;
             }
             default:
@@ -97,12 +108,16 @@ class ArticleEditor extends React.Component {
     };
 
     render() {
-        const { preview, fullscreen, html } = this.state;
+        const { preview, fullscreen, html, edited } = this.state;
         const { article } = this.props;
 
         return (
             <div className={`container-article-new ${preview} ${fullscreen && 'fullscreen'}`}>
-                <StatusBar onChange={this.handleBarChange} fullscreen={fullscreen} showSave={this.id} />
+                <StatusBar
+                    onChange={this.handleBarChange}
+                    fullscreen={fullscreen}
+                    showSave={this.id && edited}
+                />
 
                 <div id="ace-editor" className="article-textarea" />
                 <div className="article-preview markdowned" ref={this.markdownRef} title="预览">
