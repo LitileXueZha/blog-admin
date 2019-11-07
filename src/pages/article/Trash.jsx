@@ -7,19 +7,28 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
 } from '@material-ui/core';
 import moment from 'moment';
 
 import './Trash.less';
-import { updateArticle, getArticlesInTrash } from '../../store/article';
+import { restoreArticleFromTrash, getArticlesInTrash, deleteArticle } from '../../store/article';
 import { ARTICLE_TYPE } from '../../utils/constants';
 import Pagination from '../../components/Pagination';
+import Msg from '../../components/message';
 
 class ArticleTrash extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            open: false,
+            current: {},
+        };
     }
 
     getArticleList = ({ page, size }) => {
@@ -30,7 +39,26 @@ class ArticleTrash extends React.Component {
     }
 
     handleRevoke = (id) => {
-        console.log(id);
+        this.props.restoreArticleFromTrash(id)
+            .then(() => Msg.success('撤销成功'));
+    };
+
+    showModal = (current) => {
+        this.setState({ open: true, current });
+    };
+
+    hideModal = () => {
+        this.setState({ open: false });
+    }
+
+    handleDel = () => {
+        const { current: { id } } = this.state;
+
+        this.props.deleteArticle(id)
+            .then(() => {
+                Msg.success('删除成功');
+                this.hideModal();
+            });
     };
 
     renderRows() {
@@ -44,13 +72,14 @@ class ArticleTrash extends React.Component {
                 <TableCell className="article-actions">
                     <a role="button" onClick={() => this.handleRevoke(val.id)}>撤销</a>
                     <span className="divider">|</span>
-                    <a role="button">删除</a>
+                    <a role="button" onClick={() => this.showModal(val)}>删除</a>
                 </TableCell>
             </TableRow>
         ));
     }
 
     render() {
+        const { open, current } = this.state;
         const { article } = this.props;
 
         return (
@@ -68,6 +97,19 @@ class ArticleTrash extends React.Component {
 
                     <Pagination count={article.total} onChange={this.getArticleList} />
                 </Table>
+
+                <Dialog open={open} onClose={this.hideModal}>
+                    <DialogTitle>注意</DialogTitle>
+                    <DialogContent>
+                        确认要把『
+                        <em style={{ fontWeight: 600 }}>{current.title}</em>
+                        』删除吗？
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.hideModal}>取消</Button>
+                        <Button color="primary" onClick={this.handleDel}>确认</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
@@ -82,7 +124,8 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getArticlesInTrash,
-        updateArticle,
+        restoreArticleFromTrash,
+        deleteArticle,
     }, dispatch);
 }
 

@@ -103,7 +103,7 @@ class Article extends React.Component {
                 <TableCell>
                     <Link to={`/article/new?id=${val.id}`} draggable={false}>{val.title}</Link>
                 </TableCell>
-                <TableCell style={{ width: 400 }}>{val.summary}</TableCell>
+                <TableCell>{val.summary}</TableCell>
                 <TableCell>{ARTICLE_TYPE[val.category]}</TableCell>
                 <TableCell>{val.tag_name}</TableCell>
                 <TableCell className={`article-status ${val.status === 2 && 'offline'}`} onClick={(e) => this.showModal(e, val)}>
@@ -146,7 +146,7 @@ class Article extends React.Component {
                     <TableHead>
                         <TableRow>
                             <TableCell>标题</TableCell>
-                            <TableCell style={{ width: 400 }}>摘要</TableCell>
+                            <TableCell style={{ width: 450 }}>摘要</TableCell>
                             <TableCell>分类</TableCell>
                             <TableCell>标签</TableCell>
                             <TableCell>

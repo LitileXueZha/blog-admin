@@ -186,6 +186,7 @@ ace.listen = async (editor, listener, init) => {
     // 初始化编辑器内容
     // 采用同步的写法，可以阻止渲染两次。因为 init 时会触发已监听的 change 事件，导致二次渲染
     const value = await init();
+    const cacheName = value === false ? 'draft' : 'article';
 
     if (value === false) {
         // 指明使用缓存初始化
@@ -202,9 +203,11 @@ ace.listen = async (editor, listener, init) => {
             const content = editor.getValue();
             const html = marked(content);
 
-            // 设置缓存
-            localStorage.setItem('cache_article', content);
-            localStorage.setItem('cache_article_html', html);
+            // 设置对应缓存
+            // 1. 新建为 cache_draft
+            // 2. 编辑为 cache_article
+            localStorage.setItem(`cache_${cacheName}`, content);
+            localStorage.setItem(`cache_${cacheName}_html`, html);
             // 通知 react 渲染
             listener(html, (prevHtml) => {
                 // 渲染完成后的回调，进行 mermaid 与 mathjax 渲染
@@ -220,16 +223,24 @@ ace.initContent = (editor, opts) => {
 
     // 指明使用缓存初始化
     if (useCache) {
-        content = localStorage.getItem('cache_article');
-        cacheHtml = localStorage.getItem('cache_article_html');
+        content = localStorage.getItem('cache_draft');
+        cacheHtml = localStorage.getItem('cache_draft_html');
     }
     // 无内容，不渲染
-    if (!content) return;
+    if (useCache && !content) return;
+
+    if (content === null) content = ''; 
 
     editor.setValue(content);
     editor.clearSelection();
 
     const html = cacheHtml || marked(content);
+
+    if (!useCache) {
+        // 初始化编辑缓存
+        localStorage.setItem('cache_article', content);
+        localStorage.setItem('cache_article_html', html);
+    }
 
     listener(html, (prevHtml) => {
         renderMermaid({ html, prevHtml });

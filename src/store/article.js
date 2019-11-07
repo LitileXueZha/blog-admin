@@ -6,6 +6,8 @@ const ADD_ARTICLE = 'ADD_ARTICLE';
 const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
 const MOVE_ARTICLE_TO_TRASH = 'MOVE_ARTICLE_TO_TRASH';
 const GET_ARTICLES_IN_TRASH = 'GET_ARTICLES_IN_TRASH';
+const RESTORE_ARTICLE_FROM_TRASH = 'RESTORE_ARTICLE_FROM_TRASH';
+const DELETE_ARTICLE = 'DELETE_ARTICLE';
 const initialState = {
     total: 0,
     items: [],
@@ -68,6 +70,25 @@ export function getArticlesInTrash(params) {
         }));
 }
 
+export function deleteArticle(id) {
+    return (dispatch) => fetch(`/articles/${id}`, {
+        method: 'DELETE',
+    }).then(() => dispatch({
+        type: DELETE_ARTICLE,
+        payload: id,
+    }));
+}
+
+export function restoreArticleFromTrash(id) {
+    return (dispatch) => fetch(`/articles/${id}`, {
+        method: 'PUT',
+        body: { status: 2 },
+    }).then(() => dispatch({
+        type: RESTORE_ARTICLE_FROM_TRASH,
+        payload: id,
+    }));
+}
+
 // reducer
 export function article(state = initialState, action) {
     switch (action.type) {
@@ -92,7 +113,9 @@ export function article(state = initialState, action) {
                 items,
             };
         }
-        case MOVE_ARTICLE_TO_TRASH: {
+        case MOVE_ARTICLE_TO_TRASH:
+        case RESTORE_ARTICLE_FROM_TRASH:
+        case DELETE_ARTICLE: {
             const items = state.items.filter((item) => item.id !== action.payload);
             const total = state.total - 1;
 

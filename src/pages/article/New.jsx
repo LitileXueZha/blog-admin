@@ -17,7 +17,6 @@ class ArticleEditor extends React.Component {
             preview: 'input&view',
             fullscreen: false,
             html: '',
-            edited: false,
         };
         this.markdownRef = React.createRef();
         // 文章 id
@@ -27,10 +26,10 @@ class ArticleEditor extends React.Component {
     componentDidMount() {
         this.ace = ace.init('ace-editor', this.markdownRef.current);
         ace.listen(this.ace, (html, cb) => {
-            const { html: _html, edited } = this.state;
+            const { html: _html } = this.state;
 
             this.setState(
-                { html, edited: edited || _html },
+                { html },
                 () => cb(_html),
             );
         }, this.getArticleContent);
@@ -108,7 +107,7 @@ class ArticleEditor extends React.Component {
     };
 
     render() {
-        const { preview, fullscreen, html, edited } = this.state;
+        const { preview, fullscreen, html } = this.state;
         const { article } = this.props;
 
         return (
@@ -116,7 +115,7 @@ class ArticleEditor extends React.Component {
                 <StatusBar
                     onChange={this.handleBarChange}
                     fullscreen={fullscreen}
-                    showSave={this.id && edited}
+                    showSave={this.id}
                 />
 
                 <div id="ace-editor" className="article-textarea" />

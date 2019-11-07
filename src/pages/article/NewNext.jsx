@@ -38,8 +38,23 @@ class ArticleDetial extends React.Component {
     }
 
     handleSubmit = async (data) => {
-        const content = localStorage.getItem('cache_article');
-        const body = { ...data, content };
+        const content = this.id
+            ? localStorage.getItem('cache_article')
+            : localStorage.getItem('cache_draft');
+        const html = this.id
+            ? localStorage.getItem('cache_article_html')
+            : localStorage.getItem('cache_draft_html');
+        let $tmp = document.createElement('p');
+
+        // 使用 dom 提取纯文本
+        $tmp.innerHTML = html;
+
+        const { textContent } = $tmp;
+
+        // 释放内存
+        $tmp = null;
+
+        const body = { ...data, content, text_content: textContent };
 
         if (this.id) {
             // 更新
@@ -48,12 +63,12 @@ class ArticleDetial extends React.Component {
         } else {
             await this.props.addArticle(body);
             Msg.success('创建成功');
+            // 清空缓存
+            localStorage.removeItem('cache_draft');
+            localStorage.removeItem('cache_draft_html');
         }
 
         this.props.history.replace('/article');
-        // 清空缓存
-        localStorage.removeItem('cache_article');
-        localStorage.removeItem('cache_article_html');
     };
 
     handleWrite = () => {

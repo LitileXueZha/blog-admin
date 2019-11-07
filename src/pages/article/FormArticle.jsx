@@ -75,7 +75,7 @@ export default function FormArticle(props) {
                 style={{ display: 'block', marginBottom: 0 }}
                 name="title"
                 label="标题"
-                inputProps={{ maxLength: 20, className: 'input-title' }}
+                inputProps={{ maxLength: 25, className: 'input-title' }}
                 defaultValue={defaultValue.title}
                 error={error}
                 helperText={error ? '文章标题不能为空' : ' '}
