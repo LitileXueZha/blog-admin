@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound';
 import ArticleCreate from './pages/article/New';
 import ArticleDetail from './pages/article/NewNext';
 import ArticleTrash from './pages/article/Trash';
+import Msg from './pages/msg';
 
 export default function Routes() {
     return (
@@ -25,6 +26,7 @@ export default function Routes() {
                             <Route path="/article/trash" component={ArticleTrash} exact />
                             <Route path="/article/:id" component={ArticleDetail} />
                             <Route path="/tag" component={Tag} />
+                            <Route path="/msg" component={Msg} />
                             <Route component={NotFound} />
                         </Switch>
                     </Layout>
