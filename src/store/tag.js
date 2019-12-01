@@ -35,7 +35,7 @@ export function updateTag(id, body) {
     }));
 }
 
-export function tag(state = initialState, action) {
+export default function tag(state = initialState, action) {
     switch (action.type) {
         case GET_TAG_LIST:
             return { ...state, ...action.payload };

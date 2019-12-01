@@ -90,7 +90,7 @@ export function restoreArticleFromTrash(id) {
 }
 
 // reducer
-export function article(state = initialState, action) {
+export default function article(state = initialState, action) {
     switch (action.type) {
         case GET_ARTICLE_LIST:
         case GET_ARTICLES_IN_TRASH:

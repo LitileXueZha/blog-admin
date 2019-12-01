@@ -1,15 +1,15 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import { todos } from './todo';
-import { article } from './article';
-import { tag } from './tag';
+import article from './article';
+import tag from './tag';
+import msg from './msg';
 
 let composeEnhancer = compose;
 const reducers = combineReducers({
-    todos,
     article,
     tag,
+    msg,
 });
 
 // 非生产环境添加 redux-devtools-extension

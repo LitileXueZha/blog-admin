@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { teal } from '@material-ui/core/colors';
+import { teal, red } from '@material-ui/core/colors';
 
 /**
  * 主题文件
@@ -9,6 +9,7 @@ import { teal } from '@material-ui/core/colors';
 export default createMuiTheme({
     palette: {
         primary: teal,
+        secondary: red,
         text: {
             primary: '#666',
             secondary: '#999',
@@ -39,6 +40,21 @@ export default createMuiTheme({
             input: {
                 fontSize: '14px',
             },
+        },
+        MuiListItemText: {
+            primary: {
+                color: '#333',
+                fontWeight: 500,
+            },
+            secondary: {
+                color: '#666',
+                textAlign: 'justify',
+            },
+        },
+        MuiIconButton: {
+            edgeEnd: {
+                marginRight: -16,
+            }
         },
     },
 });
