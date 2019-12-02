@@ -1,14 +1,17 @@
 import fetch from '../utils/request';
 
 const GET_MSG_LIST = 'GET_MSG_LIST';
+const LOAD_MORE_MSG = 'LOAD_MORE_MSG';
 const UPDATE_MSG = 'UPDATE_MSG';
 const READ_MSG = 'READ_MSG';
+const DELETE_MSG = 'DELETE_MSG';
 const initialState = {
     total: 0,
     totalUnread: 0,
     items: [],
     unreadItems: [],
     readItems: [],
+    page: 1,
 };
 
 export function getMsgList(params) {
@@ -16,6 +19,22 @@ export function getMsgList(params) {
         type: GET_MSG_LIST,
         payload: res,
     }));
+}
+
+export function loadMoreMsg(params) {
+    return (dispatch, getState) => {
+        const { msg: { page } } = getState();
+
+        return fetch('/msg', {
+            params: {
+                ...params,
+                page: page + 1,
+            },
+        }).then((res) => dispatch({
+            type: LOAD_MORE_MSG,
+            payload: res,
+        }));
+    };
 }
 
 export function updateMsg(id, body) {
@@ -35,6 +54,15 @@ export function readMsg(id) {
     }).then((res) => dispatch({
         type: READ_MSG,
         payload: res,
+    }));
+}
+
+export function deleteMsg(id) {
+    return (dispatch) => fetch(`/msg/${id}`, {
+        method: 'DELETE',
+    }).then(() => dispatch({
+        type: DELETE_MSG,
+        payload: id,
     }));
 }
 
@@ -64,6 +92,8 @@ export default function msg(state = initialState, action) {
                 totalUnread,
                 unreadItems,
                 readItems,
+                // 重置页数
+                page: 1,
             };
         }
         case UPDATE_MSG: {
@@ -95,6 +125,16 @@ export default function msg(state = initialState, action) {
                 ...state,
                 totalUnread: state.totalUnread - 1,
                 unreadItems,
+                readItems,
+            };
+        }
+        case DELETE_MSG: {
+            const items = state.items.filter((val) => val.id !== action.payload);
+            const readItems = state.readItems.filter((val) => val.id !== action.payload);
+            return {
+                ...state,
+                total: state.total - 1,
+                items,
                 readItems,
             };
         }

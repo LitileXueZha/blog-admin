@@ -23,7 +23,7 @@ function getRandomColor() {
 }
 
 export default function ListItemMsg(props) {
-    const { id, name, avatar, content, read, create_at: createAt } = props.msg;
+    const { name, avatar, content, read, create_at: createAt } = props.msg;
     let msgAvatar = null;
 
     if (avatar) {
@@ -52,7 +52,7 @@ export default function ListItemMsg(props) {
                 </ListItemText>
                 <ListItemSecondaryAction>
                     <Tooltip title="标记为已读" placement="top">
-                        <IconButton edge="end" color="primary" onClick={() => props.onRead(id)}>
+                        <IconButton edge="end" color="primary" onClick={props.onRead}>
                             <ion-icon name="mail-open" />
                         </IconButton>
                     </Tooltip>
@@ -73,7 +73,7 @@ export default function ListItemMsg(props) {
                 </time>
             </ListItemText>
             <ListItemSecondaryAction>
-                <IconButton edge="end" color="secondary" onClick={() => props.onDelete(id)}>
+                <IconButton edge="end" color="secondary" onClick={props.onDelete}>
                     <ion-icon name="trash" />
                 </IconButton>
             </ListItemSecondaryAction>

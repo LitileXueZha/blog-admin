@@ -98,16 +98,16 @@ class ArticleTrash extends React.Component {
                     <Pagination count={article.total} onChange={this.getArticleList} />
                 </Table>
 
-                <Dialog open={open} onClose={this.hideModal}>
-                    <DialogTitle>注意</DialogTitle>
+                <Dialog open={open} onClose={this.hideModal} maxWidth="xs" fullWidth>
+                    <DialogTitle>Caution</DialogTitle>
                     <DialogContent>
                         确认要把『
-                        <em style={{ fontWeight: 600 }}>{current.title}</em>
+                        <em style={{ fontWeight: 600 }}>{` ${current.title} `}</em>
                         』删除吗？
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.hideModal}>取消</Button>
-                        <Button color="primary" onClick={this.handleDel}>确认</Button>
+                        <Button color="secondary" onClick={this.handleDel}>删除</Button>
                     </DialogActions>
                 </Dialog>
             </div>

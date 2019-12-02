@@ -5,28 +5,26 @@ import {
     ListItemText,
     ListSubheader,
     Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import './index.less';
-import { getMsgList, updateMsg, readMsg } from '../../store/msg';
+import { getMsgList, updateMsg, readMsg, deleteMsg, loadMoreMsg } from '../../store/msg';
 import ListItemMsg, { myselfMsg } from './ListItemMsg';
-
-const colors = ['#ff6977', '#00bbaa', '#008b8b', '#009688', '#128378', '#4b4b4b', '#007066', '#008080'];
-
-function getRandomColor() {
-    const max = colors.length - 1;
-    const randomIndex = Math.round(Math.random() * max);
-
-    return colors[randomIndex];
-}
+import Message from '../../components/message';
 
 class Msg extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            open: false,
+            current: {},
+        };
     }
 
     componentDidMount() {
@@ -37,9 +35,24 @@ class Msg extends React.Component {
         this.props.readMsg(id);
     }
 
-    handleMsgDel = (id) => {
-        console.log(id);
+    handleMsgDel = async () => {
+        const { current } = this.state;
+
+        await this.props.deleteMsg(current.id);
+        this.hideModal();
+        Message.success('删除成功');
+    };
+
+    showModal = (msg) => {
+        this.setState({
+            open: true,
+            current: msg,
+        });
     }
+
+    hideModal = () => {
+        this.setState({ open: false });
+    };
 
     renderMsgList(type = 'read') {
         const { unreadItems, readItems } = this.props.msg;
@@ -49,14 +62,30 @@ class Msg extends React.Component {
             <ListItemMsg
                 key={msg.id}
                 msg={msg}
-                onRead={this.handleMsgRead}
-                onDelete={this.handleMsgDel}
+                onRead={() => this.handleMsgRead(msg.id)}
+                onDelete={() => this.showModal(msg)}
             />
         ));
     }
 
+    renderLastItem = () => {
+        const { items, total } = this.props.msg;
+
+        if (items.length === total) {
+            // 加载完成
+            return (
+                <ListItem button>
+                    <ListItemText inset disableTypography>暂无更多~</ListItemText>
+                </ListItem>
+            );
+        }
+    };
+
     render() {
+        const { open, current } = this.state;
         const { msg } = this.props;
+        const loadComplete = msg.total === msg.items.length;
+        const loadMore = () => this.props.loadMoreMsg();
 
         return (
             <div className="container container-msg">
@@ -66,10 +95,23 @@ class Msg extends React.Component {
                     <ListSubheader disableSticky>已读</ListSubheader>
                     {myselfMsg}
                     {this.renderMsgList()}
-                    <Button component={ListItem} color="primary">
-                        <ListItemText inset disableTypography>加载更多</ListItemText>
+                    <Button component={ListItem} onClick={loadMore} color="primary" disabled={loadComplete}>
+                        <ListItemText inset disableTypography>{loadComplete ? '暂无更多了~' : '加载更多'}</ListItemText>
                     </Button>
                 </List>
+
+                <Dialog open={open} maxWidth="xs" fullWidth>
+                    <DialogTitle>Caution</DialogTitle>
+                    <DialogContent>
+                        确认要删除『
+                        <em style={{ fontWeight: 600 }}>{` ${current.name} `}</em>
+                        』的评论吗？
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.hideModal}>取消</Button>
+                        <Button color="secondary" onClick={this.handleMsgDel}>删除</Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
@@ -85,6 +127,8 @@ function mapDispatchToProps(dispatch) {
         getMsgList,
         updateMsg,
         readMsg,
+        deleteMsg,
+        loadMoreMsg,
     }, dispatch);
 }
 

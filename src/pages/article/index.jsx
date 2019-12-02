@@ -165,11 +165,18 @@ class Article extends React.Component {
                     <Pagination count={article.total} onChange={this.getArticleList} />
                 </Table>
 
-                <Popover open={open} anchorEl={anchorEl} onClose={this.hideModal} className="popover">
+                <Popover
+                    className="popover"
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={this.hideModal}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                >
                     <DialogContent>
                         <ion-icon name="ios-help-circle" class="icon-question" />
                         确认将此文章
-                        <b style={{ fontWeight: 'bold' }}>{current.status === 1 ? '下线' : '上线'}</b>
+                        <u>{current.status === 1 ? '下线' : '上线'}</u>
                         吗？
                     </DialogContent>
                     <DialogActions>
