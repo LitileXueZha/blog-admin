@@ -66,34 +66,66 @@ export function deleteMsg(id) {
     }));
 }
 
+/**
+ * 把留言列表分开为未读、已读两个列表
+ *
+ * @param {Object} state 旧状态
+ * @param {Array} items 后端返回新的留言列表
+ * @param {String} action redux 中的动作
+ * @return {Object} 新状态
+ */
+function splitMsg(state, items, action = 'GET_MSG_LIST') {
+    let totalUnread = 0;
+    let unreadItems = [];
+    let readItems = [];
+    let startIndex = 0;
+
+    if (action === LOAD_MORE_MSG) {
+        // 加载更多时
+        totalUnread = state.totalUnread;
+        unreadItems = [...state.unreadItems];
+        readItems = [...state.readItems];
+        startIndex = state.items.length;
+    }
+
+    // 分开已读、未读列表
+    items.forEach((item, index) => {
+        // 用于排序的字段。更快地找到两个列表中单个留言的位置
+        item.__SORT__ = index + startIndex;
+        if (item.read) {
+            readItems.push(item);
+        } else {
+            // 未读
+            totalUnread += 1;
+            unreadItems.push(item);
+        }
+    });
+
+    return { totalUnread, unreadItems, readItems };
+}
+
 export default function msg(state = initialState, action) {
     switch (action.type) {
         case GET_MSG_LIST: {
-            let totalUnread = 0;
-            const unreadItems = [];
-            const readItems = [];
-
-            // 分开已读、未读列表
-            action.payload.items.forEach((item, index) => {
-                // 用于排序的字段。更快地找到两个列表中单个留言的位置
-                item.__SORT__ = index;
-                if (item.read) {
-                    readItems.push(item);
-                } else {
-                    // 未读
-                    totalUnread += 1;
-                    unreadItems.push(item);
-                }
-            });
+            const splitedMsg = splitMsg(state, action.payload.items, action.type);
 
             return {
                 ...state,
                 ...action.payload,
-                totalUnread,
-                unreadItems,
-                readItems,
+                ...splitedMsg,
                 // 重置页数
                 page: 1,
+            };
+        }
+        case LOAD_MORE_MSG: {
+            const splitedMsg = splitMsg(state, action.payload.items, action.type);
+
+            return {
+                ...state,
+                ...action.payload,
+                items: [...state.items, ...action.payload.items],
+                ...splitedMsg,
+                page: state.page + 1,
             };
         }
         case UPDATE_MSG: {

@@ -22,7 +22,7 @@ export default function Pagination(props) {
             <TableRow>
                 <TablePagination
                     style={{ border: 'none' }}
-                    rowsPerPageOptions={rowsPerPageOptions}
+                    rowsPerPageOptions={[...rowsPerPageOptions, { label: '全部', value: count }]}
                     rowsPerPage={rowsPerPage}
                     count={count}
                     page={page}

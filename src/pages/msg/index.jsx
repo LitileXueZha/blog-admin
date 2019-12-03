@@ -83,19 +83,23 @@ class Msg extends React.Component {
 
     render() {
         const { open, current } = this.state;
-        const { msg } = this.props;
+        const { msg, loadMoreMsg } = this.props;
         const loadComplete = msg.total === msg.items.length;
-        const loadMore = () => this.props.loadMoreMsg();
 
         return (
             <div className="container container-msg">
                 <List className="list-msg">
-                    {msg.unreadItems.length > 0 && <ListSubheader disableSticky>未读</ListSubheader>}
+                    {msg.unreadItems.length > 0 && (
+                        <ListSubheader disableSticky>
+                            未读
+                            <span className="msg-unread">{msg.totalUnread}</span>
+                        </ListSubheader>
+                    )}
                     {this.renderMsgList('unread')}
                     <ListSubheader disableSticky>已读</ListSubheader>
                     {myselfMsg}
                     {this.renderMsgList()}
-                    <Button component={ListItem} onClick={loadMore} color="primary" disabled={loadComplete}>
+                    <Button component={ListItem} onClick={loadMoreMsg} color="primary" disabled={loadComplete}>
                         <ListItemText inset disableTypography>{loadComplete ? '暂无更多了~' : '加载更多'}</ListItemText>
                     </Button>
                 </List>

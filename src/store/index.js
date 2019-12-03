@@ -4,12 +4,14 @@ import thunk from 'redux-thunk';
 import article from './article';
 import tag from './tag';
 import msg from './msg';
+import comment from './comment';
 
 let composeEnhancer = compose;
 const reducers = combineReducers({
     article,
     tag,
     msg,
+    comment,
 });
 
 // 非生产环境添加 redux-devtools-extension
