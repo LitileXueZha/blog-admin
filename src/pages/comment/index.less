@@ -5,6 +5,21 @@
     border-bottom: 1px solid @borderColor;
 }
 
-.container-comment {
+.container-comment .table-comment {
+    .comment-name-unknow {
+        color: @placeholderColor;
+        user-select: none;
+    }
 
+    .comment-actions {
+        a {
+            color: @linkColor;
+            cursor: pointer;
+        }
+
+        .divider {
+            margin: 0 @mainSpace / 2;
+            color: @placeholderColor;
+        }    
+    }
 }
