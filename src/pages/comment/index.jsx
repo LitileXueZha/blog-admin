@@ -123,7 +123,7 @@ class Comment extends React.Component {
 
             if (label === LABEL_COMMENT.ADMIN) {
                 // 自己的回复
-                name = <span className="comment-name-admin">博主</span>;
+                name = <span className="comment-name-admin" title="我的评论">博主</span>;
             }
 
             return (
