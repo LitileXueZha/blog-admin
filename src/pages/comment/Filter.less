@@ -1,8 +1,10 @@
 @import '../../assets/styles/variables.less';
 
+@width: 300px;
+
 .filter-comment {
     .filter-title {
-        flex-basis: 30%;
+        width: @width;
         color: @textColorTitle;
     }
 
@@ -11,11 +13,16 @@
     }
 
     .form-item {
+        margin-left: @width;
+        width: @mostUseLength;
+        margin-bottom: -15px;
         transform-origin: left top;
         transform: scale(0.8);
     }
 
     .form-input {
         width: @mostUseLength;
+        padding-left: 40px;
+        border-left: 2px solid @borderColor;
     }
 }

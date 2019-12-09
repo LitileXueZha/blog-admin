@@ -17,6 +17,10 @@ export default function Pagination(props) {
         onChange({ page, size: rowsPerPage });
     }, [rowsPerPage, page, onChange]);
 
+    useEffect(() => {
+        Pagination.resetPage = () => setPage(0);
+    }, []);
+
     return (
         <TableFooter>
             <TableRow>

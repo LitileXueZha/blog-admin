@@ -22,7 +22,6 @@ class Comment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTab: -1,
             modal: {
                 open: false,
                 type: '', // delete-删除、reply-回复
@@ -36,30 +35,24 @@ class Comment extends React.Component {
         // this.props.getCommentList();
     }
 
-    getCommentList = (params) => {
+    getCommentList = (params, type) => {
         if (params) {
             // 存储筛选参数
-            this.params = params;
+            Object.assign(this.params, params);
+        }
+        if (type === 'resetPage') {
+            // 筛选时重置分页
+            this.params.page = 0;
+            Pagination.resetPage();
         }
 
-        const { currentTab } = this.state;
-        let { page, size } = this.params;
+        let { page } = this.params;
 
         this.props.getCommentList({
-            type: currentTab !== -1 ? currentTab : undefined,
+            ...this.params,
             page: page + 1,
-            size,
         });
     }
-
-    handleTabChange = (e, value) => {
-        const { currentTab } = this.state;
-
-        // 相同页不做处理
-        if (currentTab === value) return;
-
-        this.setState({ currentTab: value }, this.getCommentList);
-    };
 
     showModal = (type, item) => {
         this.setState({
@@ -144,13 +137,13 @@ class Comment extends React.Component {
     }
 
     render() {
-        const { currentTab, modal } = this.state;
+        const { modal } = this.state;
         const { comment } = this.props;
         const ModalAction = modal.type === 'reply' ? ActionReply : ActionDelete;
 
         return (
             <>
-                <Filter />
+                <Filter onFilter={(params) => this.getCommentList(params, 'resetPage')} />
                 <div className="container container-comment">
                     <Table className="table-comment">
                         <TableHead>

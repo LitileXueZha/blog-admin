@@ -99,7 +99,7 @@ class Msg extends React.Component {
                     <ListSubheader disableSticky>已读</ListSubheader>
                     {myselfMsg}
                     {this.renderMsgList()}
-                    <Button component={ListItem} onClick={loadMoreMsg} color="primary" disabled={loadComplete}>
+                    <Button component={ListItem} onClick={() => loadMoreMsg()} color="primary" disabled={loadComplete}>
                         <ListItemText inset disableTypography>{loadComplete ? '暂无更多了~' : '加载更多'}</ListItemText>
                     </Button>
                 </List>
