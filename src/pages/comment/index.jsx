@@ -2,8 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-    Tabs,
-    Tab,
     Table,
     TableHead,
     TableBody,
@@ -18,6 +16,7 @@ import Pagination from '../../components/Pagination';
 import { ActionReply, ActionDelete } from './ModalActions';
 import Msg from '../../components/message';
 import { LABEL_COMMENT } from '../../utils/constants';
+import Filter from './Filter';
 
 class Comment extends React.Component {
     constructor(props) {
@@ -114,6 +113,7 @@ class Comment extends React.Component {
 
         return items.map((item, index) => {
             let { name, label } = item;
+            const isAdmin = label === LABEL_COMMENT.ADMIN;
 
             if (!name) {
                 // 匿名用户。设置其名称
@@ -121,9 +121,10 @@ class Comment extends React.Component {
                 name = <span className="comment-name-unknow">{item.extName}</span>;
             }
 
-            if (label === LABEL_COMMENT.ADMIN) {
+            if (isAdmin) {
                 // 自己的回复
-                name = <span className="comment-name-admin" title="我的评论">博主</span>;
+                item.extName = '诸葛林';
+                name = <span className="comment-name-admin" title="我的评论">{item.extName}</span>;
             }
 
             return (
@@ -133,7 +134,7 @@ class Comment extends React.Component {
                     <TableCell>{item.type ? '留言' : '文章'}</TableCell>
                     <TableCell>{moment(item.create_at).format('YYYY-MM-DD hh:mm:ss')}</TableCell>
                     <TableCell className="comment-actions">
-                        <a role="button" onClick={() => this.showModal('reply', item)}>回复</a>
+                        <a className={isAdmin ? 'disabled' : undefined} role="button" onClick={() => this.showModal('reply', item)}>回复</a>
                         <span className="divider">|</span>
                         <a role="button" onClick={() => this.showModal('delete', item)}>删除</a>
                     </TableCell>
@@ -149,13 +150,8 @@ class Comment extends React.Component {
 
         return (
             <>
-                <Tabs className="tab-comment" onChange={this.handleTabChange} value={currentTab} indicatorColor="primary" textColor="primary">
-                    <Tab label="全部评论" value={-1} />
-                    <Tab label="文章" value={0} />
-                    <Tab label="留言" value={1} />
-                </Tabs>
+                <Filter />
                 <div className="container container-comment">
-                    筛选：文章、留言
                     <Table className="table-comment">
                         <TableHead>
                             <TableRow>

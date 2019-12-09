@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export function getCommentList(params) {
-    return (dispatch) => fetch('/comments', {
+    return (dispatch) => fetch('/comments/all', {
         params,
     }).then((res) => dispatch({
         type: GET_COMMENT_LIST,

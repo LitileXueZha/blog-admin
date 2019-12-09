@@ -31,7 +31,7 @@ function Layout(props) {
                         <ion-icon name="ios-person" />
                     </IconButton>
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                        <MenuItem>Admin</MenuItem>
+                        <MenuItem>诸葛林</MenuItem>
                         <MenuItem>
                             <Link to="/login">登出</Link>
                         </MenuItem>
