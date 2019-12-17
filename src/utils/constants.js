@@ -20,3 +20,8 @@ export const LABEL_COMMENT = {
     COMMON: 0, // 普通用户评论
     ADMIN: 1, // 管理员回复
 };
+
+/**
+ * 存放 token 的本地存储 key
+ */
+export const TOKEN_NAME = 'API_TOKEN';

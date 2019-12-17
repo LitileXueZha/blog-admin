@@ -1,6 +1,6 @@
 import QueryString from 'query-string';
 
-import { API } from './constants';
+import { API, TOKEN_NAME } from './constants';
 import Msg from '../components/message';
 
 /**
@@ -12,7 +12,6 @@ const defaultOpts = {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer tao',
     },
     // credentials: 'include',
 };
@@ -33,11 +32,20 @@ export default function fetch(url, opts = {}) {
         opts.body = JSON.stringify(opts.body);
     }
 
+    const token = localStorage.getItem(TOKEN_NAME);
+
+    // 无 token 不发请求
+    if (!token) {
+        return Promise.reject('未认证');
+    }
+
     const options = {
         ...defaultOpts,
         ...opts,
         headers: {
             ...defaultOpts.headers,
+            // 带上 token。这里逻辑很简单，只负责发请求
+            Authorization: token,
             ...opts.headers,
         },
     };
@@ -51,6 +59,8 @@ export default function fetch(url, opts = {}) {
 
                 if (code === 1) {
                     resolve(data);
+                } else if (code === 9001) {
+                    // TODO: token 过期
                 } else {
                     reject(res);
                     Msg.error(res.error);

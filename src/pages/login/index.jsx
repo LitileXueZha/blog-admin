@@ -26,6 +26,7 @@ class Login extends React.Component {
             },
             loginError: false,
         };
+        document.title = '登录滔\'s 博客';
     }
 
     handleSubmit = (e) => {
@@ -37,7 +38,10 @@ class Login extends React.Component {
         if (!(this.validate({ user, pwd }))) return;
 
         if (user === 'tao' && pwd === 'tao') {
-            this.props.history.push('/');
+            // 未登录时路由回跳
+            const { from } = this.props.location.state || { from: { pathname: '/' } };
+
+            this.props.history.push(from);
             return;
         }
 
