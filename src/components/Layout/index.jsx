@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Container,
     Menu,
@@ -12,15 +12,20 @@ import PropTypes from 'prop-types';
 import './index.less';
 import Nav from './Nav';
 import BreadCrumb from './BreadCrumb';
-import { logout } from '../../store/global';
+import { logout, whoami } from '../../store/global';
 
 function Layout(props) {
     const [anchorEl, setAnchorEl] = useState(null);
-    const { user } = props;
-
-    console.log(props);
+    const { global: { user, token } } = props;
 
     const handleClose = () => setAnchorEl(null);
+
+    useEffect(() => {
+        // 无用户信息查询之
+        if (token && !user.id) {
+            props.whoami();
+        }
+    }, []);
 
     return (
         <>
@@ -37,9 +42,9 @@ function Layout(props) {
                         <ion-icon name="ios-person" />
                     </IconButton>
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                        <MenuItem>诸葛林</MenuItem>
-                        <MenuItem>
-                            <Link to="/login">登出</Link>
+                        <MenuItem>{user.display_name || 'Admin'}</MenuItem>
+                        <MenuItem style={{ color: '#448aff' }} onClick={props.logout}>
+                            登出
                         </MenuItem>
                     </Menu>
                 </Container>
@@ -62,13 +67,14 @@ Layout.propTypes = {
 
 function mapStateToProps(store) {
     return {
-        user: store.global.user,
+        global: store.global,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         logout: () => dispatch(logout()),
+        whoami: () => dispatch(whoami()),
     };
 }
 

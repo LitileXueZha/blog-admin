@@ -4,6 +4,7 @@ import { TOKEN_NAME } from '../utils/constants';
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 const LOGOUT_OF_EXPIRE = 'LOGOUT_OF_EXPIRE';
+const WHOAMI = 'WHOAMI';
 const initialState = {
     // 默认从 localStorage 取
     token: localStorage.getItem(TOKEN_NAME) || '',
@@ -41,6 +42,13 @@ export function logout(isExpired = false) {
     };
 }
 
+export function whoami() {
+    return (dispatch) => fetch('/whoami').then((res) => dispatch({
+        type: WHOAMI,
+        payload: res,
+    }));
+}
+
 export default function global(state = initialState, action) {
     switch (action.type) {
         case LOGIN:
@@ -48,6 +56,8 @@ export default function global(state = initialState, action) {
         case LOGOUT:
         case LOGOUT_OF_EXPIRE:
             return { ...state, token: '' };
+        case WHOAMI:
+            return { ...state, user: action.payload };
         default:
             return state;
     }

@@ -58,7 +58,7 @@ export default function fetch(url, opts = {}) {
 
     // // 无 token 不发请求
     if (!token && API_OMIT.indexOf(url) < 0) {
-        return Promise.reject(new Error('未认证'));
+        return Promise.reject('未认证');
     }
 
     const options = {
@@ -82,8 +82,8 @@ export default function fetch(url, opts = {}) {
                 if (code === 1) {
                     resolve(data);
                 } else if (code === 9001) {
-                    // TODO: token 过期
                     ReduxStore.dispatch(ReduxStoreAction.logout(true));
+                    Msg.info('登录失效，请重新登录');
                     reject(res);
                 } else {
                     reject(res);

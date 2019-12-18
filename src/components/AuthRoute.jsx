@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { TOKEN_NAME } from '../utils/constants';
 import Msg from './message';
 
 function AuthRoute(props) {
-    const { history, location, children } = props;
+    const { history, location, children, token } = props;
     const { pathname } = location;
 
     // 校验 token 是否存在
     // if (pathname !== '/login' && !localStorage.getItem(TOKEN_NAME)) {
-    //     console.count()
     //     Msg.info('未登录');
     //     try {
 
@@ -20,14 +19,20 @@ function AuthRoute(props) {
     // }
 
     useEffect(() => {
-        if (pathname !== '/login' && !localStorage.getItem(TOKEN_NAME)) {
+        if (pathname !== '/login' && !token) {
             // FIXME: 为什么会报错？
             // Msg.info('未登录');
             history.push('/login', { from: location });
         }
-    }, [pathname, location]);
+    }, [pathname, location, token]);
 
     return children;
 }
 
-export default withRouter(AuthRoute);
+function mapStateToProps(store) {
+    return {
+        token: store.global.token,
+    };
+}
+
+export default withRouter(connect(mapStateToProps)(AuthRoute));
