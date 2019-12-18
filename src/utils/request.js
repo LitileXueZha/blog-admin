@@ -1,7 +1,8 @@
 import QueryString from 'query-string';
 
-import { API, TOKEN_NAME } from './constants';
+import { API, API_OMIT } from './constants';
 import Msg from '../components/message';
+// import store from '../store';
 
 /**
  * 请求默认值
@@ -16,6 +17,26 @@ const defaultOpts = {
     // credentials: 'include',
 };
 
+/**
+ * redux 的存储对象
+ *
+ * @var {Object}
+ */
+let ReduxStore;
+let ReduxStoreAction;
+
+/**
+ * 请求封装
+ *
+ * 简易封装版 `fetch`，支撑业务逻辑。
+ * 自定义配置有：
+ *
+ * + `params` 请求方式为 `'GET'` 时的参数
+ * + `hideErrorToast` 隐藏业务逻辑失败时的默认错误提示
+ *
+ * @param {String} url 接口 url
+ * @param {Options} opts 标准 `fetch` 中的配置 + 自定义配置
+ */
 export default function fetch(url, opts = {}) {
     let apiUrl = API + url;
 
@@ -32,11 +53,12 @@ export default function fetch(url, opts = {}) {
         opts.body = JSON.stringify(opts.body);
     }
 
-    const token = localStorage.getItem(TOKEN_NAME);
+    // 从 store 中拿 token
+    const { global: { token } } = ReduxStore.getState();
 
-    // 无 token 不发请求
-    if (!token) {
-        return Promise.reject('未认证');
+    // // 无 token 不发请求
+    if (!token && API_OMIT.indexOf(url) < 0) {
+        return Promise.reject(new Error('未认证'));
     }
 
     const options = {
@@ -61,9 +83,13 @@ export default function fetch(url, opts = {}) {
                     resolve(data);
                 } else if (code === 9001) {
                     // TODO: token 过期
+                    ReduxStore.dispatch(ReduxStoreAction.logout(true));
+                    reject(res);
                 } else {
                     reject(res);
-                    Msg.error(res.error);
+                    if (!opts.hideErrorToast) {
+                        Msg.error(res.error);
+                    }
                 }
             })
             .catch((e) => {
@@ -72,3 +98,11 @@ export default function fetch(url, opts = {}) {
             });
     });
 }
+
+export const setFetchStore = (store, actionCreators) => {
+    ReduxStore = {
+        getState: store.getState,
+        dispatch: store.dispatch,
+    };
+    ReduxStoreAction = actionCreators;
+};

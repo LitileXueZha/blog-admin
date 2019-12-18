@@ -26,6 +26,7 @@ function AuthRoute(props) {
             history.push('/login', { from: location });
         }
     }, [pathname, location]);
+
     return children;
 }
 

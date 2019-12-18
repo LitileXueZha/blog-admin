@@ -1,5 +1,9 @@
 // 接口前缀
 export const API = 'https://php/v1';
+/**
+ * 无需 token 的请求
+ */
+export const API_OMIT = ['/user/login'];
 
 // 文章分类
 export const ARTICLE_TYPE = {

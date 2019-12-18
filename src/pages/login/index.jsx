@@ -1,84 +1,43 @@
 import React from 'react';
-import { TextField, Paper, Button, Collapse } from '@material-ui/core';
+import { Paper, Collapse } from '@material-ui/core';
+import { connect } from 'react-redux';
 
 import './index.less';
 import animate from '../../utils/animate';
-
-const RULE = {
-    user: {
-        validator: (text) => text.trim(),
-        errorMsg: '请输入账号',
-    },
-    pwd: {
-        validator: (text) => text.trim(),
-        errorMsg: '请输入密码',
-    },
-};
+import FormLogin from './FormLogin';
+import { login } from '../../store/global';
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            formControl: {
-                user: {},
-                pwd: {},
-            },
             loginError: false,
         };
         document.title = '登录滔\'s 博客';
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
+    handleSubmit = (data) => {
+        this.props.login(data)
+            .then(() => {
+                const { location, history } = this.props;
+                // 未登录时路由回跳
+                const { from } = location.state || { from: { pathname: '/' } };
 
-        const user = e.target.user.value.trim();
-        const pwd = e.target.pwd.value.trim();
+                history.push(from);
+            })
+            .catch(() => {
+                if (this.state.loginError) {
+                    // 动画效果
+                    animate('.animate', 'shake');
+                }
 
-        if (!(this.validate({ user, pwd }))) return;
-
-        if (user === 'tao' && pwd === 'tao') {
-            // 未登录时路由回跳
-            const { from } = this.props.location.state || { from: { pathname: '/' } };
-
-            this.props.history.push(from);
-            return;
-        }
-
-        if (this.state.loginError) {
-            // 动画效果
-            animate('.animate', 'shake');
-        }
-
-        this.setState({ loginError: true });
+                this.setState({ loginError: true });
+            });
     };
 
-    validate(values) {
-        const fields = Object.keys(values);
-        const { formControl } = this.state;
-        let success = true;
-
-        fields.forEach((key) => {
-            const { validator, errorMsg } = RULE[key];
-            let err = {};
-
-            if (!validator(values[key])) {
-                err = {
-                    error: true,
-                    helperText: errorMsg,
-                };
-                success = false;
-            }
-
-            formControl[key] = err;
-        });
-
-        this.setState({ formControl });
-        return success;
-    }
-
     render() {
-        const { formControl: { user, pwd }, loginError } = this.state;
+        const { loginError } = this.state;
 
         return (
             <div className="container-login">
@@ -93,27 +52,8 @@ class Login extends React.Component {
                         用户名或密码错误
                     </Paper>
                 </Collapse>
-                <Paper component="form" className="form-login" onSubmit={this.handleSubmit}>
-                    <TextField
-                        label="账号"
-                        name="user"
-                        onChange={(e) => this.validate({ user: e.target.value })}
-                        fullWidth
-                        error={user.error}
-                        helperText={user.helperText || ' '}
-                    />
-                    <TextField
-                        type="password"
-                        label="密码"
-                        name="pwd"
-                        onChange={(e) => this.validate({ pwd: e.target.value })}
-                        fullWidth
-                        error={pwd.error}
-                        helperText={pwd.helperText || ' '}
-                    />
 
-                    <Button type="submit" color="primary" variant="contained" style={{ marginTop: 30 }} fullWidth>登录</Button>
-                </Paper>
+                <FormLogin onSubmit={this.handleSubmit} />
 
                 <footer className="footer">All rights reserved by Mr. tao</footer>
             </div>
@@ -121,4 +61,10 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+function mapDispatchToProps(dispatch) {
+    return {
+        login: (data) => dispatch(login(data)),
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Login);
