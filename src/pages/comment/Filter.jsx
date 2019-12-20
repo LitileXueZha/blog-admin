@@ -11,7 +11,6 @@ import {
     RadioGroup,
     Radio,
     TextField,
-    Divider,
 } from '@material-ui/core';
 
 import './Filter.less';
@@ -41,7 +40,10 @@ export default function Filter(props) {
 
     const onKeyPress = (e) => {
         if (e.nativeEvent.code === 'Enter') {
-            props.onFilter({ parent_id: parentId, type: undefined });
+            props.onFilter({
+                parent_id: parentId || undefined,
+                type: undefined,
+            });
         }
     };
 

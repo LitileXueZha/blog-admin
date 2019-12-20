@@ -9,6 +9,7 @@ import {
     TableCell,
 } from '@material-ui/core';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import './index.less';
 import { getCommentList, deleteComment, addComment } from '../../store/comment';
@@ -105,7 +106,7 @@ class Comment extends React.Component {
         const { items } = this.props.comment;
 
         return items.map((item, index) => {
-            let { name, label } = item;
+            let { name, label, type, parent } = item;
             const isAdmin = label === LABEL_COMMENT.ADMIN;
 
             if (!name) {
@@ -120,11 +121,19 @@ class Comment extends React.Component {
                 name = <span className="comment-name-admin" title="我的评论">{item.extName}</span>;
             }
 
+            // 主体
+            let parentLabel = parent.name
+                || <span className="comment-name-unknow" title="匿名留言用户">{`@${parent.id}`}</span>;
+
+            if (type === 0) {
+                parentLabel = <Link to={`/article/${parent.id}`}>{parent.title}</Link>;
+            }
+
             return (
                 <TableRow key={item.id} style={{ verticalAlign: 'top' }}>
                     <TableCell>{name}</TableCell>
                     <TableCell>{item.content}</TableCell>
-                    <TableCell>{item.type ? '留言' : '文章'}</TableCell>
+                    <TableCell>{parentLabel}</TableCell>
                     <TableCell>{moment(item.create_at).format('YYYY-MM-DD hh:mm:ss')}</TableCell>
                     <TableCell className="comment-actions">
                         <a className={isAdmin ? 'disabled' : undefined} role="button" onClick={() => this.showModal('reply', item)}>回复</a>
