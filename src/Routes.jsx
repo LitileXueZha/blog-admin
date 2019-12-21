@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import loadable from 'react-loadable';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 // import Layout from './components/Layout';
 // import AuthRoute from './components/AuthRoute';
@@ -15,22 +14,24 @@ import loadable from 'react-loadable';
 // import Msg from './pages/msg';
 // import Comment from './pages/comment';
 
-const Layout = loadable({ loader: () => import('./components/Layout') });
-const AuthRoute = loadable({ loader: () => import('./components/AuthRoute') });
-const Index = loadable({ loader: () => import('./pages') });
-const Article = loadable({ loader: () => import('./pages/article') });
-const Login = loadable({ loader: () => import('./pages/login') });
-const Tag = loadable({ loader: () => import('./pages/tag') });
-const NotFound = loadable({ loader: () => import('./pages/NotFound') });
-const ArticleCreate = loadable({ loader: () => import('./pages/article/New') });
-const ArticleDetail = loadable({ loader: () => import('./pages/article/NewNext') });
-const ArticleTrash = loadable({ loader: () => import('./pages/article/Trash') });
-const Msg = loadable({ loader: () => import('./pages/msg') });
-const Comment = loadable({ loader: () => import('./pages/comment') });
+import lazyload from './components/lazyload';
+
+const Layout = lazyload(() => import('./components/Layout'));
+const AuthRoute = lazyload(() => import('./components/AuthRoute'));
+const Index = lazyload(() => import('./pages'));
+const Article = lazyload(() => import('./pages/article'));
+const Login = lazyload(() => import('./pages/login'));
+const Tag = lazyload(() => import('./pages/tag'));
+const NotFound = lazyload(() => import('./pages/NotFound'));
+const ArticleCreate = lazyload(() => import('./pages/article/New'));
+const ArticleDetail = lazyload(() => import('./pages/article/NewNext'));
+const ArticleTrash = lazyload(() => import('./pages/article/Trash'));
+const Msg = lazyload(() => import('./pages/msg'));
+const Comment = lazyload(() => import('./pages/comment'));
 
 export default function Routes() {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Switch>
                 <Route path="/login" component={Login} />
                 <AuthRoute>
@@ -51,6 +52,6 @@ export default function Routes() {
                     </Route>
                 </AuthRoute>
             </Switch>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
