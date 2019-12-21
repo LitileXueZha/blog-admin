@@ -20,7 +20,7 @@ module.exports = {
         path: PATH_DIST,
         // conenthash 可在英文最新版看到，移除了 manifest.json
         filename: IS_PROD ? 'js/[name]-[contenthash].js' : 'js/[name].js',
-        publicPath: '/',
+        publicPath: '/admin/',
     },
     module: { rules: loaders },
     plugins: [
