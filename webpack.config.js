@@ -43,6 +43,7 @@ module.exports = {
         // 整合 runtime 到公共模块，可以不用单独打个 runtime.js 增加请求
         runtimeChunk: { name: 'runtime' },
         splitChunks: {
+            minChunks: 2,
             cacheGroups: {
                 vendors: {
                     chunks: 'all',
@@ -50,7 +51,38 @@ module.exports = {
                     test(module) {
                         return module.type === 'javascript/auto' && /[\\/]node_modules[\\/]/.test(module.resource);
                     },
-                    priority: -10,
+                    minChunks: 1,
+                    priority: 1,
+                    reuseExistingChunk: true,
+                },
+                '@material-ui': {
+                    name: 'vendors~MaterialUI',
+                    test: /[\\/]node_modules[\\/]@material-ui[\\/]/,
+                    chunks: 'all',
+                    minChunks: 1,
+                    priority: 11, // 优先处理
+                    reuseExistingChunk: true,
+                },
+                'ace-builds': {
+                    name: 'vendors~ace',
+                    test: /[\\/]node_modules[\\/]ace-builds[\\/]/,
+                    chunks: 'async',
+                    minChunks: 1,
+                    priority: 10,
+                },
+                d3: {
+                    name: 'vendors~d3',
+                    test: /[\\/]node_modules[\\/]d3(-.+?)?[\\/]/,
+                    chunks: 'async',
+                    minChunks: 1,
+                    priority: 10,
+                },
+                mermaid: {
+                    name: 'vendors~MermaidCore',
+                    test: /[\\/]node_modules[\\/]mermaid[\\/]/,
+                    chunks: 'async',
+                    minChunks: 1,
+                    priority: 10,
                 },
             },
         },
