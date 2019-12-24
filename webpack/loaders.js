@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
+const path = require('path');
 
 const IS_PROD = process.env.NODE_ENV === 'production';
 
@@ -7,6 +8,7 @@ module.exports = [
     {
         test: /\.jsx?$/,
         exclude: /node_modules/,
+        include: path.resolve(__dirname, '../src'),
         use: {
             loader: 'babel-loader',
             options: {
@@ -50,6 +52,7 @@ module.exports = [
         ],
     }, {
         test: /\.(png|jpg|gif)$/,
+        exclude: /node_modules/,
         use: {
             loader: 'file-loader',
             options: {

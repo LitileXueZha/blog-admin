@@ -34,6 +34,7 @@ module.exports = {
         colors: true,
         entrypoints: false,
         chunkOrigins: false,
+        timings: true,
     },
     optimization: {
         minimizer: [

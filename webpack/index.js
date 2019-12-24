@@ -22,7 +22,11 @@ module.exports = {
         filename: IS_PROD ? 'js/[name]-[contenthash].js' : 'js/[name].js',
         publicPath: '/admin/',
     },
-    module: { rules: loaders },
+    module: {
+        // 无依赖的大库，不用解析了
+        noParse: /loadsh|ace-builds|mermaid|moment/,
+        rules: loaders,
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html',
