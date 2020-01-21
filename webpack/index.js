@@ -24,7 +24,9 @@ module.exports = {
     },
     module: {
         // 无依赖的大库，不用解析了
-        noParse: /loadsh|ace-builds|mermaid|moment/,
+        // NOTE: 勿将 `moment` 加入，因为直接本地化 `import 'moment/locale/zh-cn'` 时
+        // 需要解析，否则 `zh-cn.js` 找不到 moment 对象
+        noParse: /loadsh|ace-builds|mermaid|moment-mini/,
         rules: loaders,
     },
     plugins: [

@@ -42,7 +42,7 @@ module.exports = {
             new OptimizeCssPlugin({}),
         ],
         // 整合 runtime 到公共模块，可以不用单独打个 runtime.js 增加请求
-        runtimeChunk: { name: 'runtime' },
+        runtimeChunk: { name: 'main' },
         splitChunks: {
             minChunks: 2,
             cacheGroups: {
