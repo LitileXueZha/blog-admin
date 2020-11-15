@@ -85,7 +85,7 @@ export default function ListItemMsg(props) {
 export const myselfMsg = (
     <ListItem alignItems="flex-start">
         <ListItemAvatar>
-            <Avatar src="https://download.ningtaostudy.cn/photo.jpg" alt="头像" variant="square" />
+            <Avatar src="https://dl.ningtaostudy.cn/photo.jpg" alt="头像" variant="square" />
         </ListItemAvatar>
         <ListItemText secondary="我希望有一个如你一般的人，如山间清爽的风，如古城温暖的光，只要最后是你就好。">
             微风轻拂晨曦之纱

@@ -14,7 +14,7 @@ module.exports = {
     devServer: {
         stats: 'minimal',
         port: 8002,
-        contentBase: path.join(__dirname, 'dist'),
+        // contentBase: path.join(__dirname, 'dist'),
         historyApiFallback: true,
         hot: true,
         compress: true,

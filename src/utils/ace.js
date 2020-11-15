@@ -20,6 +20,7 @@ import nginx from 'highlight.js/lib/languages/nginx';
 import http from 'highlight.js/lib/languages/http';
 import php from 'highlight.js/lib/languages/php';
 import sql from 'highlight.js/lib/languages/sql';
+import diff from 'highlight.js/lib/languages/diff';
 
 
 // 高亮语法
@@ -32,6 +33,7 @@ hljs.registerLanguage('nginx', nginx);
 hljs.registerLanguage('http', http);
 hljs.registerLanguage('php', php);
 hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('diff', diff);
 
 let mermaid;
 let MathJax;

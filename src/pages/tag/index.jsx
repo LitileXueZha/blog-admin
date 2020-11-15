@@ -67,7 +67,7 @@ class Tag extends React.Component {
                 <Chip
                     style={{ marginRight: 20, float: 'left' }}
                     color="primary"
-                    label={<><ion-icon style={{ fontSize: '17px' }} name="add" /> 新建</>}
+                    label={<><ion-icon style={{ fontSize: '17px' }} name="md-add" /> 新建</>}
                     onClick={this.showCreateModal}
                 />
                 <div style={{ overflow: 'auto' }}>
