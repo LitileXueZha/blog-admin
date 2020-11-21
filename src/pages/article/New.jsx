@@ -119,7 +119,7 @@ class ArticleEditor extends React.Component {
                 />
 
                 <div id="ace-editor" className="article-textarea" />
-                <div className="article-preview markdowned" ref={this.markdownRef} title="预览">
+                <div className="article-preview markdowned" ref={this.markdownRef}>
                     <h1 className="title">{(this.id && article.title) || '文章标题~文章标题~文章标题~'}</h1>
                     <div className="body">{htmlReactParser(html)}</div>
                 </div>

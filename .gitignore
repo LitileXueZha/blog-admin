@@ -1,6 +1,7 @@
 .scannerwork/
 node_modules/
 dist/
+package-lock.json
 
 # webpack-bundle-analyzer
 zzz-analyzer.html

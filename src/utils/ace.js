@@ -10,7 +10,7 @@ import aceModeMarkdown from 'ace-builds/src-noconflict/mode-markdown';
 import aceThemeXcode from 'ace-builds/src-noconflict/theme-xcode';
 import marked from 'marked';
 import 'highlight.js/styles/atom-one-light.css';
-import hljs from 'highlight.js/lib/highlight';
+import hljs from 'highlight.js/lib/core';
 import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -21,6 +21,7 @@ import http from 'highlight.js/lib/languages/http';
 import php from 'highlight.js/lib/languages/php';
 import sql from 'highlight.js/lib/languages/sql';
 import diff from 'highlight.js/lib/languages/diff';
+import shell from 'highlight.js/lib/languages/shell';
 
 
 // 高亮语法
@@ -34,6 +35,7 @@ hljs.registerLanguage('http', http);
 hljs.registerLanguage('php', php);
 hljs.registerLanguage('sql', sql);
 hljs.registerLanguage('diff', diff);
+hljs.registerLanguage('shell', shell);
 
 let mermaid;
 let MathJax;
@@ -146,10 +148,10 @@ renderer.codespan = (code) => {
 
     return renderer.defaultCodespan(code);
 };
-// 3. 文章内容里的一、二级标题转化成二、三级标题
+// 3. 文章内容里标题转化降低一个层级
 renderer.defaultHeading = renderer.heading;
 renderer.heading = (text, level, raw, slugger) => {
-    if (level < 3) {
+    if (level < 6) {
         level += 1;
     }
 

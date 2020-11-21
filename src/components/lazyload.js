@@ -1,5 +1,7 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+// import Loadable from 'react-loadable';
+// 上面那个长期不维护了，改用其它的
+import Loadable from '@loadable/component';
 
 /**
  * 加载中组件
@@ -22,8 +24,7 @@ function Loading() {
  * @return {Component} 返回 `Loadable()` 的组件
  */
 export default function lazyload(loader) {
-    return Loadable({
-        loader,
-        loading: Loading,
+    return Loadable(loader, {
+        fallback: <Loading />,
     });
 }
