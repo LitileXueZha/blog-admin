@@ -25,6 +25,11 @@ class ArticleEditor extends React.Component {
 
     componentDidMount() {
         this.ace = ace.init('ace-editor', this.markdownRef.current);
+        this.ace.commands.addCommand({
+            name: 'save',
+            bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
+            exec: () => this.handleBarChange({ event: 'save' }),
+        });
         ace.listen(this.ace, (html, cb) => {
             const { html: _html } = this.state;
 

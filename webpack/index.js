@@ -26,7 +26,12 @@ module.exports = {
         // 无依赖的大库，不用解析了
         // NOTE: 勿将 `moment` 加入，因为直接本地化 `import 'moment/locale/zh-cn'` 时
         // 需要解析，否则 `zh-cn.js` 找不到 moment 对象
-        noParse: /loadsh|ace-builds|mermaid|moment-mini/,
+        // INFO: 谨慎使用。排查 `mermaid` 库半天，用的时候 `require` 浏览器中报错了，
+        //       但是换一种导入方式 `import 'mermaid/dist/mermaid'` 全量引入就行。
+        //       问题就出在这，这个库上传的是打包后的文件，`mermaid.core.js` 不包括
+        //       其依赖，因此需要 webpack 解析之，而此库入口就是它；另一个文件 `mermaid.core.js`
+        //       则打包了依赖进去，不需要浏览器不支持的 `require`。
+        noParse: /loadsh|ace-builds|moment-mini/,
         rules: loaders,
     },
     plugins: [
