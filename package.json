@@ -4,7 +4,7 @@
   "description": "博客管理系统",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.dev.js --hot --color",
+    "start": "wc-reload webpack-dev-server --config webpack.config.dev.js --hot --color",
     "build": "cross-env NODE_ENV=production webpack -p --progress",
     "build:profile": "cross-env NODE_ENV=production webpack -p --progress --profile --json > dist/stats.json"
   },
@@ -74,6 +74,7 @@
     "webpack": "^4.41.0",
     "webpack-bundle-analyzer": "^3.5.2",
     "webpack-cli": "^3.3.9",
+    "webpack-config-reload": "^0.1.0",
     "webpack-dev-server": "^3.8.2"
   },
   "config": {

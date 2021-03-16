@@ -114,6 +114,13 @@ class ArticleEditor extends React.Component {
     render() {
         const { preview, fullscreen, html } = this.state;
         const { article } = this.props;
+        let htmlNodes;
+
+        try {
+            htmlNodes = htmlReactParser(html);
+        } catch (e) {
+            htmlNodes = <p style={{ color: 'red' }}>解析异常 {e.message}</p>;
+        }
 
         return (
             <div className={`container-article-new ${preview} ${fullscreen && 'fullscreen'}`}>
@@ -126,7 +133,7 @@ class ArticleEditor extends React.Component {
                 <div id="ace-editor" className="article-textarea" />
                 <div className="article-preview markdowned" ref={this.markdownRef}>
                     <h1 className="title">{(this.id && article.title) || '文章标题~文章标题~文章标题~'}</h1>
-                    <div className="body">{htmlReactParser(html)}</div>
+                    <div className="body">{htmlNodes}</div>
                 </div>
             </div>
         );
