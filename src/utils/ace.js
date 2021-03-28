@@ -8,41 +8,13 @@
 import ace from 'ace-builds';
 import aceModeMarkdown from 'ace-builds/src-noconflict/mode-markdown';
 import aceThemeXcode from 'ace-builds/src-noconflict/theme-xcode';
-import marked from 'marked';
-import 'highlight.js/styles/atom-one-light.css';
-import hljs from 'highlight.js/lib/core';
-import xml from 'highlight.js/lib/languages/xml';
-import css from 'highlight.js/lib/languages/css';
-import javascript from 'highlight.js/lib/languages/javascript';
-import bash from 'highlight.js/lib/languages/bash';
-import markdown from 'highlight.js/lib/languages/markdown';
-import nginx from 'highlight.js/lib/languages/nginx';
-import http from 'highlight.js/lib/languages/http';
-import php from 'highlight.js/lib/languages/php';
-import sql from 'highlight.js/lib/languages/sql';
-import diff from 'highlight.js/lib/languages/diff';
-import shell from 'highlight.js/lib/languages/shell';
 
-
-// 高亮语法
-hljs.registerLanguage('html', xml);
-hljs.registerLanguage('css', css);
-hljs.registerLanguage('javascript', javascript);
-hljs.registerLanguage('bash', bash);
-hljs.registerLanguage('markdown', markdown);
-hljs.registerLanguage('nginx', nginx);
-hljs.registerLanguage('http', http);
-hljs.registerLanguage('php', php);
-hljs.registerLanguage('sql', sql);
-hljs.registerLanguage('diff', diff);
-hljs.registerLanguage('shell', shell);
+import marked from './ace.marked.js';
 
 let mermaid;
 let MathJax;
 // let $mathjax;
 const regMermaid = /<div class="mermaid">[\s\S]+?<\/div>/gm;
-const regMathJax = /(\$|\\\()[\s\S]+?(\$|\\\))/gm;
-const renderer = new marked.Renderer();
 
 /**
  * 使用 mermaid.js 渲染流程图
@@ -129,47 +101,8 @@ function renderMathJax() {
     MathJax.typesetPromise($mathjax);
 }
 
-// monkey patch 猴子补丁
-// 1. mermaid 转化
-renderer.defaultCode = renderer.code;
-renderer.code = (code, lang) => {
-    if (code.match(/^(graph|sequenceDiagram)/)) {
-        return `<div class="mermaid">${code}</div>`;
-    }
-
-    return renderer.defaultCode(code, lang);
-};
-// 2. mathjax 转化
-renderer.defaultCodespan = renderer.codespan;
-renderer.codespan = (code) => {
-    if (code.match(regMathJax)) {
-        return `<span class="mathjax">${code}</span>`;
-    }
-
-    return renderer.defaultCodespan(code);
-};
-// 3. 文章内容里标题转化降低一个层级
-renderer.defaultHeading = renderer.heading;
-renderer.heading = (text, level, raw, slugger) => {
-    if (level < 6) {
-        level += 1;
-    }
-
-    return renderer.defaultHeading(text, level, raw, slugger);
-};
-
 ace.config.setModuleUrl('ace/mode/markdown', aceModeMarkdown);
 ace.config.setModuleUrl('ace/theme/xcode', aceThemeXcode);
-marked.setOptions({
-    renderer,
-    highlight: function highlight(code, lang) {
-        if (hljs.getLanguage(lang)) {
-            return hljs.highlight(lang, code).value;
-        }
-
-        return code;
-    },
-});
 
 ace.init = (selector) => {
     const editor = ace.edit(selector, {
@@ -233,7 +166,7 @@ ace.initContent = (editor, opts) => {
     // 无内容，不渲染
     if (useCache && !content) return;
 
-    if (content === null) content = ''; 
+    if (content === null) content = '';
 
     editor.setValue(content);
     editor.clearSelection();

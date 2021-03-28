@@ -25,11 +25,14 @@ class ArticleEditor extends React.Component {
 
     componentDidMount() {
         this.ace = ace.init('ace-editor', this.markdownRef.current);
-        this.ace.commands.addCommand({
-            name: 'save',
-            bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
-            exec: () => this.handleBarChange({ event: 'save' }),
-        });
+        if (this.id) {
+            // 仅编辑已存在的文章添加快捷键，草稿不用
+            this.ace.commands.addCommand({
+                name: 'save',
+                bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
+                exec: () => this.handleBarChange({ event: 'save' }),
+            });
+        }
         ace.listen(this.ace, (html, cb) => {
             const { html: _html } = this.state;
 
