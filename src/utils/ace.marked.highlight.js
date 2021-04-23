@@ -10,6 +10,7 @@ import php from 'highlight.js/lib/languages/php';
 import sql from 'highlight.js/lib/languages/sql';
 import diff from 'highlight.js/lib/languages/diff';
 import shell from 'highlight.js/lib/languages/shell';
+import yaml from 'highlight.js/lib/languages/yaml';
 
 import 'highlight.js/styles/atom-one-light.css';
 
@@ -25,6 +26,7 @@ hljs.registerLanguage('php', php);
 hljs.registerLanguage('sql', sql);
 hljs.registerLanguage('diff', diff);
 hljs.registerLanguage('shell', shell);
+hljs.registerLanguage('yaml', yaml);
 
 /**
  * 已高亮的语言（按字母排序）
