@@ -1,7 +1,7 @@
 const path = require('path');
 const ReactErrorOverlay = require('error-overlay-webpack-plugin');
 
-const config = require('./webpack');
+const config = require('./index.js');
 
 // 添加错误显示
 config.plugins.push(new ReactErrorOverlay());
@@ -17,7 +17,6 @@ module.exports = {
         // contentBase: path.join(__dirname, 'dist'),
         historyApiFallback: true,
         hot: true,
-        compress: true,
         // 请注意，访问 `/admin` 将找不到文件，必须要加上斜杠
         // 你可以访问 `/webpack-dev-server` 查看更多
         publicPath: '/admin/',

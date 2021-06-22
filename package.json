@@ -4,7 +4,7 @@
   "description": "博客管理系统",
   "main": "index.js",
   "scripts": {
-    "start": "wc-reload webpack-dev-server --config webpack.config.dev.js --hot --color",
+    "start": "wc-reload webpack-dev-server --config webpack/webpack.config.dev.js --hot --color",
     "build": "cross-env NODE_ENV=production webpack -p --progress",
     "build:profile": "cross-env NODE_ENV=production webpack -p --progress --profile --json > dist/stats.json"
   },
@@ -47,6 +47,7 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.6.3",
+    "@babel/runtime": "^7.14.6",
     "autoprefixer": "^9.6.4",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",

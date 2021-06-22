@@ -36,7 +36,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: './public/index.html',
         }),
         new MiniCssExtractPlugin({
             filename: IS_PROD ? 'css/[name]-[contenthash].css' : 'css/[name].css',
@@ -44,7 +44,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin([
             {
-                from: './favicon.ico',
+                from: './public/favicon.ico',
                 to: path.join(PATH_DIST, '[name].[ext]'),
             },
         ]),
