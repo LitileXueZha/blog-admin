@@ -16,7 +16,8 @@ a {
 	text-decoration: none;
 	// outline: none;
 	
-	&:hover {
+	&:not([role="button"]):hover {
+		text-decoration: underline;
 		color: @activeColor;
 	}
 }

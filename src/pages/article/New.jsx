@@ -92,7 +92,7 @@ class ArticleEditor extends React.Component {
                 break;
             }
             case 'next':
-                this.props.history.push(`/article/${this.id || 'new-next'}`);
+                this.props.history.push(`/article/_/${this.id || 'new-next'}`);
                 break;
             case 'save': {
                 const content = localStorage.getItem('cache_article');

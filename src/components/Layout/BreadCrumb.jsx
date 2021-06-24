@@ -13,11 +13,12 @@ const BREADCRUMB = {
     '/': '首页',
     '/article': '文章',
     '/article/trash': '垃圾箱',
+    '/article/draft': '草稿',
     '/article/new': {
         title: '写文章',
         icon: <IosBrush />,
     },
-    '/article/*': '文章详情',
+    '/article/_/*': '文章详情',
     '/tag': '标签',
     '/msg': '留言',
     '/comment': '评论',
@@ -37,6 +38,11 @@ function BreadCrumb(props) {
         // 通配符匹配
         const wildcard = `${to}/*`;
 
+        // 下划线路径忽略
+        if (paths[i] === '_') {
+            to += '/_';
+            continue;
+        }
         if (exactTo in BREADCRUMB) {
             to = exactTo;
         } else if (wildcard in BREADCRUMB) {
@@ -89,4 +95,4 @@ function BreadCrumb(props) {
     );
 }
 
-export default withRouter(BreadCrumb);
+export default withRouter(React.memo(BreadCrumb));

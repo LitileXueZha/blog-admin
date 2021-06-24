@@ -121,12 +121,18 @@ class Article extends React.Component {
 
         return (
             <div className="container">
-                <Link to="/article/new" tabIndex="-1">
-                    <Button color="primary" variant="contained">
-                        <IosBrush style={{ marginRight: 10 }} />
-                        写文章
-                    </Button>
-                </Link>
+                <Button
+                    component={Link}
+                    to="/article/new"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<IosBrush style={{ fontSize: '18px' }} />}
+                    style={{ marginRight: 20 }}
+                >
+                    写文章
+                </Button>
+                <Button variant="outlined" component={Link} to="/article/draft">本地の草稿</Button>
+
                 <Tooltip title="拖拽列表中某一项至此放入垃圾箱">
                     <Button
                         className="trash"

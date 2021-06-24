@@ -40,9 +40,9 @@ export default function Routes() {
                             <Switch>
                                 <Route path="/" component={Index} exact />
                                 <Route path="/article" component={Article} exact />
-                                <Route path="/article/new" component={ArticleCreate} exact />
+                                <Route path="/article/(new|draft)" component={ArticleCreate} exact />
                                 <Route path="/article/trash" component={ArticleTrash} exact />
-                                <Route path="/article/:id" component={ArticleDetail} />
+                                <Route path="/article/_/:id" component={ArticleDetail} />
                                 <Route path="/tag" component={Tag} />
                                 <Route path="/msg" component={Msg} />
                                 <Route path="/comment" component={Comment} />
