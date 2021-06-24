@@ -20,6 +20,7 @@ import { getArticleList, updateArticle, moveArticleToTrash } from '../../store/a
 import { ARTICLE_TYPE, ARTICLE_STATUS } from '../../utils/constants';
 import Pagination from '../../components/Pagination';
 import Msg from '../../components/message';
+import { IosBrush, MdTrash, IosHelpCircle } from '../../assets/icons';
 
 class Article extends React.Component {
     constructor(props) {
@@ -122,7 +123,7 @@ class Article extends React.Component {
             <div className="container">
                 <Link to="/article/new" tabIndex="-1">
                     <Button color="primary" variant="contained">
-                        <ion-icon name="ios-brush" style={{ marginRight: 10 }} />
+                        <IosBrush style={{ marginRight: 10 }} />
                         写文章
                     </Button>
                 </Link>
@@ -132,7 +133,7 @@ class Article extends React.Component {
                         component={Link}
                         to="/article/trash"
                         variant="outlined"
-                        startIcon={<ion-icon name="trash" />}
+                        startIcon={<MdTrash />}
                         onDrop={this.handleDrop}
                         onDragOver={this.handleDragOver}
                         ref={this.trashRef}
@@ -153,7 +154,7 @@ class Article extends React.Component {
                                 <Tooltip title="点击以修改文章的状态">
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                         状态
-                                        <ion-icon name="ios-help-circle" style={{ fontSize: 18, color: '#999' }} />
+                                        <IosHelpCircle style={{ fontSize: 18, color: '#999' }} />
                                     </div>
                                 </Tooltip>
                             </TableCell>
@@ -174,7 +175,7 @@ class Article extends React.Component {
                     transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                 >
                     <DialogContent>
-                        <ion-icon name="ios-help-circle" class="icon-question" />
+                        <IosHelpCircle className="icon-question" />
                         确认将此文章
                         <u>{current.status === 1 ? '下线' : '上线'}</u>
                         吗？

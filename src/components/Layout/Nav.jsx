@@ -2,6 +2,13 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { ButtonBase } from '@material-ui/core';
 
+import {
+    IosBook,
+    IosPricetags,
+    IosEasel,
+    IosText,
+} from '../../assets/icons';
+
 function Nav(props) {
     function getActiveName(path) {
         let className = 'header-nav-item';
@@ -17,19 +24,19 @@ function Nav(props) {
     return (
         <nav className="header-nav">
             <ButtonBase className={getActiveName('/article')} component={Link} to="/article" focusRipple>
-                <ion-icon name="ios-book" />
+                <IosBook className="icon" />
                 文章
             </ButtonBase>
             <ButtonBase className={getActiveName('/tag')} component={Link} to="/tag" focusRipple>
-                <ion-icon name="ios-pricetags" />
+                <IosPricetags className="icon" />
                 标签云
             </ButtonBase>
             <ButtonBase className={getActiveName('/msg')} component={Link} to="/msg" focusRipple>
-                <ion-icon name="ios-easel" />
+                <IosEasel className="icon" />
                 留言板
             </ButtonBase>
             <ButtonBase className={getActiveName('/comment')} component={Link} to="/comment" focusRipple>
-                <ion-icon name="ios-text" />
+                <IosText className="icon" />
                 评论管理
             </ButtonBase>
         </nav>

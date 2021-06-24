@@ -6,7 +6,8 @@
   "scripts": {
     "start": "wc-reload webpack-dev-server --config webpack/webpack.config.dev.js --hot --color",
     "build": "cross-env NODE_ENV=production webpack -p --progress",
-    "build:profile": "cross-env NODE_ENV=production webpack -p --progress --profile --json > dist/stats.json"
+    "build:profile": "cross-env NODE_ENV=production webpack -p --progress --profile --json > dist/stats.json",
+    "icons": "node public/SVGIconsGenerator.js"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,11 @@
+.vscode/
 .scannerwork/
 node_modules/
 dist/
 package-lock.json
+
+# SVGIconsGenerator
+src/assets/icons/
 
 # webpack-bundle-analyzer
 zzz-analyzer.html

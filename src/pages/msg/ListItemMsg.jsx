@@ -13,6 +13,8 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
+import { MdMailOpen, MdTrash } from '../../assets/icons';
+
 const colors = ['#ff6977', '#00bbaa', '#008b8b', '#009688', '#128378', '#4b4b4b', '#007066', '#008080'];
 
 function getRandomColor() {
@@ -53,7 +55,7 @@ export default function ListItemMsg(props) {
                 <ListItemSecondaryAction>
                     <Tooltip title="标记为已读" placement="top">
                         <IconButton edge="end" color="primary" onClick={props.onRead}>
-                            <ion-icon name="mail-open" />
+                            <MdMailOpen />
                         </IconButton>
                     </Tooltip>
                 </ListItemSecondaryAction>
@@ -74,7 +76,7 @@ export default function ListItemMsg(props) {
             </ListItemText>
             <ListItemSecondaryAction>
                 <IconButton edge="end" color="secondary" onClick={props.onDelete}>
-                    <ion-icon name="trash" />
+                    <MdTrash />
                 </IconButton>
             </ListItemSecondaryAction>
         </ListItem>

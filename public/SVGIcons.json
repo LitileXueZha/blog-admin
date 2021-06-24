@@ -1,0 +1,26 @@
+{
+    "downloadURL": "https://unpkg.com/ionicons",
+    "version": "4.5.10-0",
+    "basename": "/dist/ionicons/svg",
+    "ext": "svg",
+    "icons": [
+        "ios-information-circle",
+        "ios-checkmark-circle",
+        "ios-alert",
+        "ios-close-circle",
+        "ios-brush",
+        "ios-person",
+        "ios-book",
+        "ios-pricetags",
+        "ios-easel",
+        "ios-text",
+        "md-trash",
+        "ios-help-circle",
+        "ios-apps",
+        "md-expand",
+        "ios-eye",
+        "ios-arrow-down",
+        "md-mail-open",
+        "md-add"
+    ]
+}

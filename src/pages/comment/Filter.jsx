@@ -13,6 +13,7 @@ import {
     TextField,
 } from '@material-ui/core';
 
+import { IosArrowDown } from '../../assets/icons';
 import './Filter.less';
 
 const TEXT_COMMENT = {
@@ -63,7 +64,7 @@ export default function Filter(props) {
 
     return (
         <ExpansionPanel className="filter-comment" defaultExpanded>
-            <ExpansionPanelSummary expandIcon={<ion-icon name="ios-arrow-down" />}>
+            <ExpansionPanelSummary expandIcon={<IosArrowDown />}>
                 <div className="filter-title">筛选所有评论:</div>
                 <span className="filter-content">{renderContent()}</span>
             </ExpansionPanelSummary>

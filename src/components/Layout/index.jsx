@@ -9,10 +9,12 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import imgLogo from '@assets/images/logo.jpg';
 import './index.less';
 import Nav from './Nav';
 import BreadCrumb from './BreadCrumb';
 import { logout, whoami } from '../../store/global';
+import { IosPerson } from '../../assets/icons';
 
 function Layout(props) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -31,20 +33,20 @@ function Layout(props) {
         <>
             <header className="header">
                 <Container className="header-content">
-                    <Link to="/">
-                        <img src={require('@assets/images/logo.jpg')} className="logo" alt="logo" width="50" height="50" />
+                    <Link to="/" style={{ lineHeight: 0 }}>
+                        <img src={imgLogo} className="logo" alt="logo" width="50" height="50" />
                     </Link>
                     {/* <Link to="/" className="logo">博客管理系统</Link> */}
 
                     <Nav />
 
                     <IconButton className="menu" onClick={(e) => setAnchorEl(e.target)}>
-                        <ion-icon name="ios-person" />
+                        <IosPerson />
                     </IconButton>
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                         <MenuItem>{user.display_name || 'Admin'}</MenuItem>
                         <MenuItem style={{ color: '#448aff' }} onClick={props.logout}>
-                            登出
+                            注销
                         </MenuItem>
                     </Menu>
                 </Container>

@@ -1,5 +1,6 @@
 @import './styles/reset.css';
 @import './styles/variables.less';
+@import './styles/components.less';
 
 body {
 	color: @textColor;
@@ -24,6 +25,13 @@ code, pre {
 	background: #f5f5f5;
 }
 
+kbd {
+	padding: 0 4px;
+	color: #fff;
+	background-color: @textColor;
+	border-radius: 4px;
+}
+
 input:-webkit-autofill { 
 	box-shadow: 0 0 0px 1000px #fff inset;
 }
@@ -36,11 +44,4 @@ input:-webkit-autofill {
 		padding: @mainSpace * 2;
 		background: #fff;	
 	}
-}
-
-.footer {
-    padding: @mainSpace * 2 0 @mainSpace 0;
-    color: @textColorDesc;
-    font-size: 12px;
-    text-align: center;
 }

@@ -1,6 +1,6 @@
 @import '../../styles/variables.less';
 
-@height: 58px;
+@height: 52px;
 
 .header {
     height: @height;
@@ -31,35 +31,28 @@
 
         .header-nav-item {
             height: 100%;
+            padding: 0 @mainSpace * 2;
+            color: #B2DFDB;
+            font-size: 16px;
             transition: .3s;
         }
         .header-nav-item.active {
             background: #00796B;
-
-            a {
-                color: #fff;
-            }
-        }
-    
-        a {
-            display: flex;
-            align-items: center;
-            height: 100%;
-            padding: 0 @mainSpace * 2;
-            color: #B2DFDB;
-            transition: .3s;
-        }
-        a:hover {
             color: #fff;
         }
-        a ion-icon {
+    
+        .header-nav-item:hover {
+            color: #fff;
+        }
+        .icon {
             margin-right: 5px;
-            font-size: 16px;
+            font-size: 1.125em;
         }
     }
 
     .menu {
         margin-left: auto;
+        margin-right: -12px;
         color: #fff;
         font-size: 24px;
         cursor: pointer;
@@ -79,8 +72,15 @@
             color: @textColorTitle;
         }
 
-        ion-icon {
+        .SVGIcon {
             margin-right: 2px;
         }
     }
+}
+
+.footer {
+    padding: @mainSpace * 2 0 @mainSpace 0;
+    color: @textColorDesc;
+    font-size: 12px;
+    text-align: center;
 }

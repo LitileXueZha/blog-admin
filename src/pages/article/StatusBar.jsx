@@ -5,6 +5,9 @@ import {
     MenuItem,
 } from '@material-ui/core';
 
+import imgAce from '@assets/images/ace.png';
+import { IosApps, MdExpand, IosEye } from '../../assets/icons';
+
 const PREVIEW_OPT = {
     input: '仅输入',
     view: '仅预览',
@@ -31,14 +34,15 @@ export default function StatusBar(props) {
     return (
         <div className="actions">
             <img
-                src={require('@assets/images/ace.png')}
+                src={imgAce}
                 className="editor-logo"
                 alt="ace"
                 title="powered by ace-editor"
+                width="36"
                 height="24"
             />
             <Button onClick={() => setOpen(true)} ref={previewRef}>
-                <ion-icon style={{ marginRight: 5 }} name="ios-apps" />
+                <IosApps style={{ marginRight: 5 }} />
                 {PREVIEW_OPT[status]}
             </Button>
             <Menu anchorEl={previewRef.current} open={open} onClose={() => setOpen(false)}>
@@ -47,11 +51,11 @@ export default function StatusBar(props) {
                 ))}
             </Menu>
             <Button onClick={() => handleClick('input')}>
-                <ion-icon style={{ marginRight: 5 }} name="expand" />
+                <MdExpand style={{ marginRight: 5 }} />
                 {props.fullscreen ? '取消全屏' : '全屏输入'}
             </Button>
             <Button onClick={() => handleClick('look')}>
-                <ion-icon style={{ marginRight: 5 }} name="ios-eye" />
+                <IosEye style={{ marginRight: 5 }} />
                 F11 预览
             </Button>
             <Button

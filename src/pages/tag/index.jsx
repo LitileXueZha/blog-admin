@@ -14,6 +14,7 @@ import {
     Slide,
 } from '@material-ui/core';
 
+import { MdAdd } from '../../assets/icons';
 import './index.less';
 import { getTagList, addTag, updateTag } from '../../store/tag';
 import FormTag from './FormTag';
@@ -67,7 +68,7 @@ class Tag extends React.Component {
                 <Chip
                     style={{ marginRight: 20, float: 'left' }}
                     color="primary"
-                    label={<><ion-icon style={{ fontSize: '17px' }} name="md-add" /> 新建</>}
+                    label={<><MdAdd style={{ fontSize: '18px' }}  /> 新建</>}
                     onClick={this.showCreateModal}
                 />
                 <div style={{ overflow: 'auto' }}>

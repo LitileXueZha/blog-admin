@@ -2,6 +2,8 @@ import React from 'react';
 import { Breadcrumbs } from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom';
 
+import { IosBrush } from '../../assets/icons';
+
 /**
  * 面包屑导航配置
  *
@@ -13,7 +15,7 @@ const BREADCRUMB = {
     '/article/trash': '垃圾箱',
     '/article/new': {
         title: '写文章',
-        icon: 'brush',
+        icon: <IosBrush />,
     },
     '/article/*': '文章详情',
     '/tag': '标签',
@@ -21,6 +23,8 @@ const BREADCRUMB = {
     '/comment': '评论',
     404: '页面不见了',
 };
+// 项目代号
+const TITLE_SUFFIX = 'YesFamily';
 
 
 function BreadCrumb(props) {
@@ -52,11 +56,11 @@ function BreadCrumb(props) {
 
         if (typeof bread === 'object') {
             title = bread.title;
-            icon = <ion-icon name={`ios-${bread.icon}`} />;
+            icon = bread.icon;
         }
 
         // NOTE: 设置浏览器标题
-        document.title = title;
+        document.title = `${title}_${TITLE_SUFFIX}`;
 
         if (i === paths.length - 1) {
             // 最后一个
