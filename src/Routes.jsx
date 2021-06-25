@@ -14,7 +14,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 // import Msg from './pages/msg';
 // import Comment from './pages/comment';
 
-import lazyload from './components/lazyload';
+import lazyload from './components/lazyload.js';
 
 const Layout = lazyload(() => import('./components/Layout'));
 const AuthRoute = lazyload(() => import('./components/AuthRoute'));
@@ -23,9 +23,9 @@ const Article = lazyload(() => import('./pages/article'));
 const Login = lazyload(() => import('./pages/login'));
 const Tag = lazyload(() => import('./pages/tag'));
 const NotFound = lazyload(() => import('./pages/NotFound'));
-const ArticleCreate = lazyload(() => import('./pages/article/New'));
-const ArticleDetail = lazyload(() => import('./pages/article/NewNext'));
-const ArticleTrash = lazyload(() => import('./pages/article/Trash'));
+const ArticleEdit = lazyload(() => import('./pages/article/edit'));
+const ArticleDetail = lazyload(() => import('./pages/article/detail'));
+const ArticleTrash = lazyload(() => import('./pages/article/trash'));
 const Msg = lazyload(() => import('./pages/msg'));
 const Comment = lazyload(() => import('./pages/comment'));
 
@@ -40,7 +40,7 @@ export default function Routes() {
                             <Switch>
                                 <Route path="/" component={Index} exact />
                                 <Route path="/article" component={Article} exact />
-                                <Route path="/article/(new|draft)" component={ArticleCreate} exact />
+                                <Route path="/article/(new|draft)" component={ArticleEdit} exact />
                                 <Route path="/article/trash" component={ArticleTrash} exact />
                                 <Route path="/article/_/:id" component={ArticleDetail} />
                                 <Route path="/tag" component={Tag} />

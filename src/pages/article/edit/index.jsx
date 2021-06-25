@@ -3,11 +3,11 @@ import htmlReactParser from 'html-react-parser';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ace from '../../utils/ace';
-import './New.less';
-import StatusBar from './StatusBar';
-import { getArticle, updateArticle } from '../../store/article';
-import Msg from '../../components/message';
+import ace from '../../../utils/ace.js';
+import './index.less';
+import StatusBar from './StatusBar.jsx';
+import { getArticle, updateArticle } from '../../../store/article.js';
+import Msg from '../../../components/message.js';
 
 class ArticleEditor extends React.Component {
     constructor(props) {

@@ -12,11 +12,11 @@ import {
 } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
 
-import { getTagList } from '../../store/tag';
-import { getArticle, addArticle, updateArticle } from '../../store/article';
-import Msg from '../../components/message';
-import FormArticle from './FormArticle';
-import './NewNext.less';
+import { getTagList } from '../../../store/tag.js';
+import { getArticle, addArticle, updateArticle } from '../../../store/article.js';
+import Msg from '../../../components/message.js';
+import FormArticle from './FormArticle.jsx';
+import './index.less';
 
 class ArticleDetial extends React.Component {
     constructor(props) {

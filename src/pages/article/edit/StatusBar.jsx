@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 import imgAce from '@assets/images/ace.png';
-import { IosApps, MdExpand, IosEye } from '../../assets/icons';
+import { IosApps, MdExpand, IosEye } from '../../../assets/icons';
 
 const PREVIEW_OPT = {
     input: '仅输入',

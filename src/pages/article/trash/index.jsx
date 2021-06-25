@@ -15,11 +15,11 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import './Trash.less';
-import { restoreArticleFromTrash, getArticlesInTrash, deleteArticle } from '../../store/article';
-import { ARTICLE_TYPE } from '../../utils/constants';
-import Pagination from '../../components/Pagination';
-import Msg from '../../components/message';
+import './index.less';
+import { restoreArticleFromTrash, getArticlesInTrash, deleteArticle } from '../../../store/article.js';
+import { ARTICLE_TYPE } from '../../../utils/constants.js';
+import Pagination from '../../../components/Pagination.jsx';
+import Msg from '../../../components/message.js';
 
 class ArticleTrash extends React.Component {
     constructor(props) {
