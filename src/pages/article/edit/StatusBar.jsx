@@ -47,7 +47,13 @@ export default function StatusBar(props) {
             </Button>
             <Menu anchorEl={previewRef.current} open={open} onClose={() => setOpen(false)}>
                 {Object.entries(PREVIEW_OPT).map(([key, value]) => (
-                    <MenuItem key={key} onClick={() => handlePreviewClick(key)}>{value}</MenuItem>
+                    <MenuItem
+                        key={key}
+                        selected={key === status}
+                        onClick={() => handlePreviewClick(key)}
+                    >
+                        {value}
+                    </MenuItem>
                 ))}
             </Menu>
             <Button onClick={() => handleClick('input')}>
@@ -63,6 +69,7 @@ export default function StatusBar(props) {
                 style={{ float: 'right' }}
                 color="primary"
                 variant="contained"
+                disabled={props.disableNext}
             >
                 写完了
             </Button>

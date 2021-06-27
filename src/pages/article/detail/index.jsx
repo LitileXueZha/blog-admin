@@ -12,6 +12,11 @@ import {
 } from '@material-ui/core';
 import { Link, withRouter } from 'react-router-dom';
 
+import ace, {
+    AceEditorStorage,
+    ACE_STORAGE_DRAFT,
+    ACE_STORAGE_ARTICLE,
+} from '../../../utils/ace.js';
 import { getTagList } from '../../../store/tag.js';
 import { getArticle, addArticle, updateArticle } from '../../../store/article.js';
 import Msg from '../../../components/message.js';
@@ -28,6 +33,10 @@ class ArticleDetial extends React.Component {
         if (id !== 'new-next') {
             this.id = id;
         }
+        // 页面刷新后，导致上个页面的 ace 存储丢失
+        if (!ace.storage) {
+            ace.storage = new AceEditorStorage(this.id ? ACE_STORAGE_ARTICLE : ACE_STORAGE_DRAFT);
+        }
     }
 
     componentDidMount() {
@@ -38,12 +47,7 @@ class ArticleDetial extends React.Component {
     }
 
     handleSubmit = async (data) => {
-        const content = this.id
-            ? localStorage.getItem('cache_article')
-            : localStorage.getItem('cache_draft');
-        const html = this.id
-            ? localStorage.getItem('cache_article_html')
-            : localStorage.getItem('cache_draft_html');
+        const { content, html } = ace.storage.getValues();
         let $tmp = document.createElement('p');
 
         // 使用 dom 提取纯文本
@@ -64,8 +68,7 @@ class ArticleDetial extends React.Component {
             await this.props.addArticle(body);
             Msg.success('创建成功');
             // 清空缓存
-            localStorage.removeItem('cache_draft');
-            localStorage.removeItem('cache_draft_html');
+            ace.storage.setValues();
         }
 
         this.props.history.replace('/article');
@@ -90,7 +93,7 @@ class ArticleDetial extends React.Component {
             <div className="container">
                 <FormArticle
                     onSubmit={this.handleSubmit}
-                    defaultValue={this.id ? article.current : {}}
+                    defaultValue={this.id ? article : {}}
                     tagList={tag.items}
                     type={this.id ? 'edit' : 'create'}
                 >
@@ -103,7 +106,7 @@ class ArticleDetial extends React.Component {
 
 function mapStateToProps(store) {
     return {
-        article: store.article,
+        article: store.article.current,
         tag: store.tag,
     };
 }

@@ -61,5 +61,9 @@ module.exports = [
                 name: '[name].[ext]',
             },
         },
+    }, {
+        test: /\.(md|txt)$/,
+        exclude: /node_modules/,
+        use: 'raw-loader',
     },
 ];

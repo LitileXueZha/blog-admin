@@ -2,10 +2,12 @@ import React from 'react';
 import { Paper, Collapse } from '@material-ui/core';
 import { connect } from 'react-redux';
 
+import imgLogo from '@assets/images/logo.jpg';
 import './index.less';
-import animate from '../../utils/animate';
-import FormLogin from './FormLogin';
-import { login } from '../../store/global';
+import animate from '../../utils/animate.js';
+import FormLogin from './FormLogin.jsx';
+import { login } from '../../store/global.js';
+import Msg from '../../components/message.js';
 
 class Login extends React.Component {
     constructor(props) {
@@ -24,6 +26,7 @@ class Login extends React.Component {
                 // 未登录时路由回跳
                 const { from } = location.state || { from: { pathname: '/' } };
 
+                Msg.success('登录成功');
                 history.push(from);
             })
             .catch(() => {
@@ -43,7 +46,7 @@ class Login extends React.Component {
             <div className="container-login">
                 <div className="login-header">
                     <a href="https://www.ningtaostudy.cn" target="_blank" rel="noopener noreferrer">
-                        <img src={require('@assets/images/logo.jpg')} className="login-logo" alt="logo" width="50" height="50" />
+                        <img src={imgLogo} className="login-logo" alt="logo" width="50" height="50" />
                     </a>
                     <h1 className="login-title">登录滔&apos;s 博客</h1>
                 </div>
