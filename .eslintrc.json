@@ -26,6 +26,7 @@
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "import/extensions": ["error", "ignorePackages"],
+        "react/jsx-indent-props": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/jsx-indent": [2, 4],
         "react-hooks/rules-of-hooks": "error",

@@ -8,6 +8,7 @@ import animate from '../../utils/animate.js';
 import FormLogin from './FormLogin.jsx';
 import { login } from '../../store/global.js';
 import Msg from '../../components/message.js';
+import xorEncrypt from './xorEncrypt.js';
 
 class Login extends React.Component {
     constructor(props) {
@@ -20,6 +21,7 @@ class Login extends React.Component {
     }
 
     handleSubmit = (data) => {
+        data.pwd = window.btoa(xorEncrypt(data.pwd, `${data.account}${new Date().getDate()}`));
         this.props.login(data)
             .then(() => {
                 const { location, history } = this.props;
