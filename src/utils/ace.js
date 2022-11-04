@@ -21,6 +21,16 @@ const ACE_CONFIGS = {
     printMarginColumn: 120,
     wrap: true,
     foldStyle: 'markbegin',
+    fontFamily: [
+        'SFMono-Regular',
+        'Consolas',
+        'Monaco',
+        '"Liberation Mono"', // Linux
+        'Menlo',
+        'Courier',
+        '"Microsoft YaHei"', // Windows 上等宽字体默认的“宋体”斜着看起来太难受了
+        'monospace',
+    ].join(','),
     // scrollPastEnd: 1,
 };
 
@@ -36,7 +46,7 @@ class AceEditor {
 
     /**
      * 初始化编辑器
-     * 
+     *
      * @param {string} selectors css 选择符
      * @param {object} 配置项
      */
@@ -102,7 +112,7 @@ export class AceEditorStorage {
 
     /**
      * 读取编辑器数据
-     * 
+     *
      * @returns {object}
      */
     getValues() {
@@ -114,7 +124,7 @@ export class AceEditorStorage {
 
     /**
      * 设置编辑器数据（无参数可清空）
-     * 
+     *
      * @param {object} data
      */
     setValues(data = {}) {

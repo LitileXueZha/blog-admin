@@ -30,7 +30,7 @@ hljs.registerLanguage('yaml', yaml);
 
 /**
  * 已高亮的语言（按字母排序）
- * 
+ *
  * bash css diff html http javascript
  * markdown nginx php shell sql
  */

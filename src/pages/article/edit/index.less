@@ -114,8 +114,8 @@
 }
 
 .markdowned {
-    color: #555;
-    line-height: 20px;
+    font-size: 16px;
+    line-height: 22px;
     overflow: hidden;
     word-break: break-word;
 
@@ -173,7 +173,9 @@
     }
   
     code {
-      padding: 0 4px;
+      padding: .2em .4em;
+      font-size: 0.875em;
+      border-radius: @radius;
     }
     pre > code {
       display: block;
@@ -190,9 +192,12 @@
     }
   
     blockquote {
-      padding: 0 1em;
-      color: #6a737d;
-      border-left: 0.25em solid #dfe2e5;
+      margin: 1em 0;
+      padding: 0 1.5em;
+      color: @textColorDesc;
+      background-color: lighten(@mainColor, 67.5%);
+      border-left: 4px solid @mainColor;
+      overflow: hidden;
     }
   
     sub {

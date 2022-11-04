@@ -36,6 +36,7 @@ module.exports = {
         chunkOrigins: false,
         timings: true,
     },
+    devtool: 'source-map',
     optimization: {
         minimizer: [
             new TerserWebpackPlugin({}),

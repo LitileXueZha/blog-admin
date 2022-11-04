@@ -2,6 +2,8 @@
  * 主题样式定义
  *
  * 主题色、文本、间隔
+ *
+ * @see https://primer.style/primitives/colors
  */
 
 
@@ -11,25 +13,38 @@
 
 @navFontColor: tint(#fff, 80%);
 
-@borderColor: #bdbdbd;
-@linkColor: #448aff;
+@borderColor: #d0d7de;
+@linkColor: #0969da;
 @placeholderColor: #ccc;
 
-@dangerColor: #f44336;
+@dangerColor: #cf222e;
 
 @mainWidth: 1170px;
-@mainSpace: 10px;
+@mainSpace: 12px;
 @mostUseLength: 270px;
+@radius: 6px;
 
 // material-ui 框架主要间距
-@muiMainSpace: 8px;
+@muiMainSpace: 12px;
 
 // 字体
 @textSize: 14px;
-@textColorTitle: #333;
-@textColor: #666;
-@textColorDesc: #999;
-@textFont: -apple-system, BlinkMacSystemFont,
-'Segoe UI', 'Roboto', sans-serif, Arial,
-'Apple Color Emoji', 'Segoe UI Emoji';
+@textColorTitle: #24292f;
+@textColor: #24292f;
+@textColorDesc: #6e7781;
+@textFont:
+    // Windows
+    'Segoe UI',
+    // 跨平台。系统默认
+    system-ui, 
+    // 苹果系列
+    -apple-system, BlinkMacSystemFont,
+    // 安卓
+    'Roboto',
+    // Linux
+    'Noto Sans', 'Liberation Sans',
+    // 兜底方案
+    Helvetica, Arial, sans-serif,
+    // Emoji 表情
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 @textHeight: 20px;

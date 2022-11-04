@@ -3,7 +3,7 @@
 
 /**
  * 防抖
- * 
+ *
  * @param {function} fn
  * @param {number} duration 间隔时间
  * @returns {function}

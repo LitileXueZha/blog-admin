@@ -9,31 +9,7 @@ module.exports = [
         test: /\.jsx?$/,
         exclude: /node_modules/,
         include: path.resolve(__dirname, '../src'),
-        use: {
-            loader: 'babel-loader',
-            options: {
-                presets: ['@babel/preset-env', '@babel/preset-react'],
-                plugins: [
-                    [
-                        'babel-plugin-import',
-                        {
-                            libraryName: '@material/core',
-                            libraryDirectory: 'esm',
-                            camel2DashComponentName: false,
-                        },
-                        'core',
-                    ],
-                    [
-                        '@babel/plugin-transform-runtime',
-                        {
-                            regenerator: true,
-                        },
-                    ],
-                    '@babel/plugin-proposal-class-properties',
-                    '@babel/plugin-syntax-dynamic-import',
-                ],
-            },
-        },
+        use: 'babel-loader',
     }, {
         test: /\.(le|c)ss$/,
         use: [
