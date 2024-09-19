@@ -1,5 +1,5 @@
 // 接口前缀
-export const API = 'https://api.ningtaostudy.cn/v1';
+export const API = '/api/v1';
 /**
  * 无需 token 的请求
  */
